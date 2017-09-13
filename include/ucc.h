@@ -122,26 +122,27 @@
 
 #if HAS_FEATURE(stdnoreturn_h) || HAS_INCLUDE("stdnoreturn.h")
 # include <stdnoreturn.h>
+# define NORETURN _Noreturn
 #elif HAS_ATTRIBUTE(noreturn) || (defined CC_GCC && CC_GCC >= 20700UL)
-# define _Noreturn __attribute__((__noreturn__))
+# define NORETURN __attribute__((__noreturn__))
 #elif defined __STDC__ && __STDC_VERSION__ >= 201112L
-# define _Noreturn _Noreturn
+# define NORETURN _Noreturn
 #elif defined CC_MSVC
-# define _Noreturn __declspec(noreturn)
+# define NORETURN __declspec(noreturn)
 #else
-# define _Noreturn
+# define NORETURN
 #endif
 
 #if HAS_ATTRIBUTE(pure)
-# define purecall __attribute__((__pure__))
+# define PURE __attribute__((__pure__))
 #else
-# define purecall
+# define PURE
 #endif
 
 #if HAS_EXTENSION(attribute_const) || HAS_ATTRIBUTE(const)
-# define constcall __attribute__((__const__))
+# define CONST __attribute__((__const__))
 #else
-# define constcall
+# define CONST
 #endif
 
 #if defined CC_GCC || HAS_ATTRIBUTE(unused)
