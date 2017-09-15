@@ -23,16 +23,48 @@
  * SOFTWARE.
  */
 
-/*!@file ucc.h
+/*!@file ucc/os.h
  * @author uael
  */
-#ifndef __UCC_H
-# define __UCC_H
+#ifndef __UCC_OS_H
+# define __UCC_OS_H
 
-#include "ucc/arch.h"
-#include "ucc/cc.h"
-#include "ucc/cpu.h"
-#include "ucc/kw.h"
-#include "ucc/os.h"
+#if defined __pnacl__
+# define OS_PNACL __pnacl__
+#elif defined __ANDROID__
+# define OS_ANDROID __ANDROID__
+# define OS_POSIX OS_ANDROID
+#elif defined __TIZEN__
+# define OS_TIZEN __TIZEN__
+# define OS_POSIX OS_TIZEN
+#elif defined __APPLE__ && __APPLE__
+# define OS_APPLE __APPLE__
+# define OS_POSIX OS_APPLE
+#elif defined __MACH__
+# define OS_MACOS __MACH__
+#elif defined __linux__
+# define OS_LINUX __linux__
+# define OS_POSIX OS_LINUX
+#elif defined __linux
+# define OS_LINUX __linux
+# define OS_POSIX OS_LINUX
+#elif defined __BSD__
+# define OS_BSD __BSD__
+# define OS_POSIX OS_BSD
+#elif defined __FreeBSD__
+# define OS_BSD __FreeBSD__
+# define OS_POSIX OS_BSD
+#elif defined _WIN64
+# define OS_WIN _WIN64
+# define OS_WIN64 OS_WIN
+#elif defined _WIN32
+# define OS_WIN _WIN32
+# define OS_WIN32 OS_WIN
+#elif defined __WIN32__
+# define OS_WIN __WIN32__
+# define OS_WIN32 OS_WIN
+#else
+# define OS_UNKNOWN
+#endif
 
-#endif /* !__UCC_H */
+#endif /* !__UCC_OS_H */
