@@ -29,9 +29,7 @@
 #ifndef __UCC_KW_H
 # define __UCC_KW_H
 
-#include "cc.h"
-#include "cpu.h"
-#include "os.h"
+#include "feature.h"
 
 #ifndef __cplusplus
 # define __register__ register
@@ -47,8 +45,7 @@
 #if defined CC_MSVC || defined CC_ICC
 # define __asm__ __asm
 # define __inline__ __inline
-# define __inline_force__ __forceinline
-# define __packed__(x) __pragma(pack(push, 1)) x __pragma(pack(pop))
+# define __packed__(...) __pragma(pack(push, 1)) __VA_ARGS__ __pragma(pack(pop))
 # define __aligned__(a) __declspec(align(a))
 # define __alignof__(ty) __alignof(ty)
 # define __cdecl__ __cdecl
@@ -58,8 +55,7 @@
 #elif defined CC_GCC
 # define __asm__ __asm__
 # define __inline__ __inline__
-# define __inline_force__ __inline__ __attribute__((always_inline))
-# define __packed__(x) __attribute__((packed, aligned(1))) x
+# define __packed__(...) __attribute__((packed, aligned(1))) __VA_ARGS__
 # define __aligned__(a) __attribute__((aligned(a)))
 # define __alignof__(ty) __alignof__(ty)
 # if defined __x86_64 || defined __amd64__ || defined __amd64 \
@@ -77,11 +73,7 @@
 #else
 # define __asm__
 # define __inline__ inline
-# define __inline_force__ static inline
-# define __func__
-# define __file__ ""
-# define __line__ (0)
-# define __packed__(x)
+# define __packed__(...) __VA_ARGS__
 # define __aligned__(a)
 # define __alignof__(ty)
 # define __cdecl__
@@ -90,9 +82,8 @@
 # define __thiscall__
 #endif
 
-/*! @def __cpu_aligned__
- *
- * the cpu byte alignment
+/*!@def __cpu_aligned__
+ * the cpu byte alignment.
  */
 #if (CPU_BYTE == 8)
 # define __cpu_aligned__ __aligned__(8)
@@ -105,17 +96,11 @@
 #endif
 
 #if defined CC_ICC || (defined CC_GCC && CC_BT(2, 0))
-# define __likely__(x) __builtin_expect(!!(x), 1)
-# define __unlikely__(x) __builtin_expect(!!(x), 0)
+# define LIKELY(x) __builtin_expect(!!(x), 1)
+# define UNLIKELY(x) __builtin_expect(!!(x), 0)
 #else
-# define __likely__(x) (x)
-# define __unlikely__(x) (x)
-#endif
-
-#ifdef OS_WIN
-# define __newline__ "\r\n"
-#else
-# define __newline__ "\n"
+# define LIKELY(x) (x)
+# define UNLIKELY(x) (x)
 #endif
 
 #ifdef __cplusplus
@@ -124,54 +109,10 @@
 # define __extern_c__
 #endif
 
-#if defined CC_MSVC
-# define __export__ __declspec(dllexport)
-#elif defined CC_CLANG || (defined CC_GCC && CC_BE(3, 3))
-# define __export__ __attribute__((visibility("default")))
-#else
-# define __export__
-#endif
-
-#if defined CC_CLANG || (defined CC_GCC && CC_BE(3, 0))
-# define __deprecated__ __attribute__((deprecated))
-#elif defined CC_MSVC && CC_MSVC >= 1300
-# define __deprecated__ __declspec(deprecated)
-#else
-# define __deprecated__
-#endif
-
-#ifdef __has_feature
-# define __has_feature__(x) __has_feature(x)
-#else
-# define __has_feature__(x) 0
-#endif
-
-#ifdef __has_include
-# define __has_include__(x) __has_include(x)
-#else
-# define __has_include__(x) 0
-#endif
-
-#ifdef __has_builtin
-# define __has_builtin__(x) __has_builtin(x)
-#else
-# define __has_builtin__(x) 0
-#endif
-
-#if __has_feature__(address_sanitizer) || defined __SANITIZE_ADDRESS__
-# define __no_sanitize_address__ __attribute__((no_sanitize_address))
-#else
-# define __no_sanitize_address__
-#endif
-
-#if __has_feature__(c_thread_local)
+#if __has_feature(c_thread_local)
 # define __thread_local__ _Thread_local
 #elif defined CC_GCC
-# if CC_BE(4, 9)
-#   define __thread_local__ _Thread_local
-# else
-#   define __thread_local__ __thread
-# endif
+# define __thread_local__ __thread
 #elif defined CC_MSVC || defined CC_BORLAND
 # define __thread_local__ __declspec(thread)
 #endif

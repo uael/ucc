@@ -46,8 +46,8 @@
  * @return An expression of type pointer to char.
  */
 #ifndef STRINGIFY
-# define STRINGIGY_EX(x) #x
-# define STRINGIFY(x) STRINGIGY_EX(x)
+# define STRINGIFY_EX(x) #x
+# define STRINGIFY(x) STRINGIFY_EX(x)
 #endif
 
 #if defined __INTEL_COMPILER

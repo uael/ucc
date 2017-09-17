@@ -30,8 +30,11 @@
 # define __UCC_H
 
 #include "ucc/arch.h"
+#include "ucc/attr.h"
 #include "ucc/cc.h"
 #include "ucc/cpu.h"
+#include "ucc/cpu.h"
+#include "ucc/feature.h"
 #include "ucc/kw.h"
 #include "ucc/os.h"
 

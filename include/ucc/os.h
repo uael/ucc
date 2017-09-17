@@ -67,4 +67,12 @@
 # define OS_UNKNOWN
 #endif
 
+#ifdef OS_WIN
+# define EOL "\r\n"
+# define DS "\\"
+#else
+# define EOL "\n"
+# define DS "/"
+#endif
+
 #endif /* !__UCC_OS_H */
