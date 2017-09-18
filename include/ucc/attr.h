@@ -58,9 +58,9 @@
 #elif defined CC_GCC
 # if __has_attribute(gnu_inline)
 #   define FORCEINLINE \
-  __attribute__((__always_inline__,__gnu_inline__,__weak__)) __inline__
+  __attribute__((__always_inline__,__gnu_inline__)) __inline__
 # else
-#   define FORCEINLINE __attribute__((__always_inline__,__weak__)) __inline__
+#   define FORCEINLINE __attribute__((__always_inline__)) __inline__
 # endif
 #elif __has_attribute(always_inline)
 # define FORCEINLINE __attribute__((__always_inline__)) __inline__
