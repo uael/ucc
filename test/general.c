@@ -2,14 +2,12 @@
 #include <assert.h>
 #include <stdlib.h>
 
-$pure $const
-inline int
+PURE CONST __inline__ int
 foo(int a, int b) {
   return a + b;
 }
 
-$noreturn
-void
+NORETURN void
 die(int code) {
   exit(code);
 }

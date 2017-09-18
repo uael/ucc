@@ -64,9 +64,6 @@
 # define ucc_has_extension_attribute_const 1
 # define ucc_has_attribute_pure 1
 # define ucc_has_builtin___builtin_popcount 1
-# if defined __GNUC_GNU_INLINE__ || CC_LT(4, 3)
-#  define ucc_has_attribute_gnu_inline 1
-# endif
 # define ucc_has_attribute_aligned 1
 # define ucc_has_attribute_noreturn 1
 # define ucc_has_attribute___noreturn__ 1
@@ -77,15 +74,18 @@
 # if CC_BE(4, 6)
 #  define ucc_has_attribute_externally_visible 1
 # endif
-# if defined __GNUC_STDC_INLINE__ || CC_BE(4, 3)
-#  define ucc_has_feature_c_inline 1
-# endif
 # if CC_BE(4, 7)
 #  define ucc_has_feature_stdnoreturn_h 1
 #  define ucc_has_feature_stdalign_h 1
 # endif
 # if CC_BE(4, 9)
 #   define ucc_has_feature_c_thread_local 1
+# endif
+# if defined __GNUC_GNU_INLINE__ || CC_LT(4, 3)
+#  define ucc_has_attribute_gnu_inline 1
+# endif
+# if defined __GNUC_STDC_INLINE__ || CC_BE(4, 3)
+#  define ucc_has_feature_c_inline 1
 # endif
 #endif
 
