@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-PURE CONST __inline__ int
+static PURE CONST __inline__ int
 foo(int a, int b) {
   return a + b;
 }
