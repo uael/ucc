@@ -33,42 +33,95 @@
 # define OS_PNACL __pnacl__
 #elif defined __ANDROID__
 # define OS_ANDROID __ANDROID__
-# define OS_POSIX OS_ANDROID
 #elif defined __TIZEN__
 # define OS_TIZEN __TIZEN__
-# define OS_POSIX OS_TIZEN
-#elif defined __APPLE__ && __APPLE__
-# define OS_APPLE __APPLE__
-# define OS_POSIX OS_APPLE
-#elif defined __MACH__
-# define OS_MACOS __MACH__
-#elif defined __linux__
-# define OS_LINUX __linux__
-# define OS_POSIX OS_LINUX
-#elif defined __linux
-# define OS_LINUX __linux
-# define OS_POSIX OS_LINUX
-#elif defined __BSD__
-# define OS_BSD __BSD__
-# define OS_POSIX OS_BSD
+#elif defined __APPLE__ && \
+      (defined __GNUC__ || defined __xlC__ || defined __xlc__)
+# define OS_DARWIN
+# define OS_BSD4
+# ifdef __LP64__
+#   define OS_DARWIN64
+# else
+#   define OS_DARWIN32
+# endif
+# elif defined Macintosh || defined macintosh
+# define OS_MAC9
+#elif defined __MSYS__
+# define OS_MSYS
+#elif defined __CYGWIN__
+# define OS_CYGWIN
+#elif defined _WIN64 || defined _M_X64 || defined _M_AMD64
+# define OS_WIN64
+#elif defined __WIN32__ || defined _WIN32 || defined WIN32
+# define OS_WIN
+#elif defined __linux || defined __linux__
+# define OS_LINUX
 #elif defined __FreeBSD__
-# define OS_BSD __FreeBSD__
-# define OS_POSIX OS_BSD
-#elif defined _WIN64
-# define OS_WIN _WIN64
-# define OS_WIN64 OS_WIN
-#elif defined _WIN32
-# define OS_WIN _WIN32
-# define OS_WIN32 OS_WIN
-#elif defined __WIN32__
-# define OS_WIN __WIN32__
-# define OS_WIN32 OS_WIN
-#elif defined sun
-# define OS_SOLARIS sun
-#elif defined __sun
-# define OS_SOLARIS __sun
-#else
-# define OS_UNKNOWN
+# define OS_FREEBSD
+# define OS_BSD4
+#elif defined __DragonFly__
+# define OS_DRAGONFLY
+# define OS_BSD4
+#elif defined __NetBSD__
+# define OS_NETBSD
+# define OS_BSD4
+#elif defined __OpenBSD__
+# define OS_OPENBSD
+# define OS_BSD4
+#elif defined _AIX
+# define OS_AIX
+#elif defined hpux || defined __hpux
+# define OS_HPUX
+#elif defined __osf__ || defined __osf
+# define OS_TRU64
+#elif defined __sun || defined sun
+# define OS_SOLARIS
+#elif defined __QNXNTO__
+# ifdef __BLACKBERRY10__
+#   define OS_BB10
+# else
+#   define OS_QNX6
+# endif
+#elif defined __QNX__
+# define OS_QNX
+#elif defined _SCO_DS
+# define OS_SCO
+#elif defined __USLC__ || defined __UNIXWARE__
+# define OS_UNIXWARE
+#elif defined __svr4__ && defined i386
+# define OS_UNIXWARE
+#elif defined __sgi || defined sgi
+# define OS_IRIX
+#elif defined __HAIKU__
+# define OS_HAIKU
+#elif defined __SYLLABLE__
+# define OS_SYLLABLE
+#elif defined __BEOS__
+# define OS_BEOS
+#elif defined __OS2__
+# define OS_OS2
+#elif defined VMS || defined __VMS
+# define OS_VMS
+#endif
+
+#ifdef OS_WIN64
+# define OS_WIN
+#endif
+
+#if defined OS_DARWIN
+# define OS_MAC
+# if defined OS_DARWIN64
+#   define OS_MAC64
+# elif defined OS_DARWIN32
+#   define OS_MAC32
+# endif
+#endif
+
+#if defined OS_WIN || defined OS_MAC9 || defined OS_HAIKU || \
+  defined OS_BEOS || defined OS_OS2 || defined OS_VMS || defined OS_PNACL
+# undef OS_UNIX
+#elif !defined OS_UNIX
+# define OS_UNIX
 #endif
 
 #ifdef OS_WIN

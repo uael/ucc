@@ -95,14 +95,6 @@
 # error unknown cpu bytes
 #endif
 
-#if defined CC_ICC || (defined CC_GCC && CC_BT(2, 0))
-# define LIKELY(x) __builtin_expect(!!(x), 1)
-# define UNLIKELY(x) __builtin_expect(!!(x), 0)
-#else
-# define LIKELY(x) (x)
-# define UNLIKELY(x) (x)
-#endif
-
 #ifdef __cplusplus
 # define __extern_c__ extern "C"
 #else

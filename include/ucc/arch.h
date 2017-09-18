@@ -31,173 +31,183 @@
 
 #include "kw.h"
 
-#if defined __i386 || defined __i686 || defined __i386__ \
-  || defined __i686__ || defined _M_IX86
-# define ARCH_x86
-# if defined __i386 || defined __i386__
-#   define ARCH_STR "i386"
-# elif defined __i686 || defined __i686__
-#   define ARCH_STR "i686"
-# elif defined _M_IX86
-#   if (_M_IX86 == 300)
-#     define ARCH_STR "i386"
-#   elif (_M_IX86 == 400)
-#     define ARCH_STR "i486"
-#   elif (_M_IX86 == 500 || _M_IX86 == 600)
-#     define ARCH_STR "Pentium"
-#   endif
+#if defined __alpha__ || defined __alpha || defined _M_ALPHA
+# define ARCH_ALPHA
+#elif defined __arm__ || defined __TARGET_ARCH_ARM || defined _ARM || \
+      defined _M_ARM_ || defined __arm || defined __aarch64__
+# if defined __aarch64__
+#   define ARCH_ARM_64
 # else
-#   define ARCH_STR "x86"
+#   define ARCH_ARM_32
 # endif
-#elif defined __x86_64 || defined __amd64__ || defined __amd64 \
-    || defined _M_IA64 || defined _M_X64
-# define ARCH_x64
-# if defined __x86_64
-#   define ARCH_STR "x86_64"
-# elif defined __amd64__ || defined __amd64
-#   define ARCH_STR "amd64"
-# else
-#   define ARCH_STR "x64"
+# if defined __ARM_ARCH && __ARM_ARCH > 1
+#   define ARCH_ARM __ARM_ARCH
+# elif defined __TARGET_ARCH_ARM && __TARGET_ARCH_ARM > 1
+#   define ARCH_ARM __TARGET_ARCH_ARM
+# elif defined _M_ARM && _M_ARM > 1
+#   define ARCH_ARM _M_ARM
+# elif defined __ARM64_ARCH_8__ || defined __aarch64__ || \
+       defined __CORE_CORTEXAV8__
+#   define ARCH_ARM 8
+#   define ARCH_ARM_V8
+# elif defined __ARM_ARCH_7__ || defined __ARM_ARCH_7A__ || \
+       defined __ARM_ARCH_7R__ || defined __ARM_ARCH_7M__ || \
+       defined __ARM_ARCH_7S__ || defined _ARM_ARCH_7 || \
+       defined __CORE_CORTEXA__
+#   define ARCH_ARM 7
+#   define ARCH_ARM_V7
+# elif defined __ARM_ARCH_6__ || defined __ARM_ARCH_6J__ || \
+       defined __ARM_ARCH_6T2__ || defined __ARM_ARCH_6Z__ || \
+       defined __ARM_ARCH_6K__ || defined __ARM_ARCH_6ZK__ || \
+       defined __ARM_ARCH_6M__
+#   define ARCH_ARM 6
+#   define ARCH_ARM_V6
+# elif defined __ARM_ARCH_5__ || defined __ARM_ARCH_5E__ || \
+       defined __ARM_ARCH_5T__ || defined __ARM_ARCH_5TE__ || \
+       defined __ARM_ARCH_5TEJ__
+#   define ARCH_ARM 5
+#   define ARCH_ARM_V5
+# elif defined __ARM_ARCH_4__ || defined __ARM_ARCH_4T__
+#   define ARCH_ARM 4
+#   define ARCH_ARM_V4
+# elif defined __ARM_ARCH_3__ || defined __ARM_ARCH_3M__
+#   define ARCH_ARM 3
+#   define ARCH_ARM_V3
+# elif defined __ARM_ARCH_2__
+#   define ARCH_ARM 2
+#   define ARCH_ARM_V2
 # endif
-#elif defined __arm__ || defined __arm64 || defined __arm64__ \
-  || (defined __aarch64__ && __aarch64__)
-# define ARCH_ARM
-# if defined __ARM64_ARCH_8__
-#   define ARCH_ARM64
-#   define ARCH_ARM_VER (8)
-#   define ARCH_ARM_v8
-#   define ARCH_STR "arm64"
-# elif defined __ARM_ARCH_7A__
-#   define ARCH_ARM_VER (7)
-#   define ARCH_ARM_v7A
-#   define ARCH_STR "armv7a"
-# elif defined __ARM_ARCH_7__
-#   define ARCH_ARM_VER (7)
-#   define ARCH_ARM_v7
-#   define ARCH_STR "armv7"
-# elif defined __ARM_ARCH_6__
-#   define ARCH_ARM_VER (6)
-#   define ARCH_ARM_v6
-#   define ARCH_STR "armv6"
-# elif defined __ARM_ARCH_5TE__
-#   define ARCH_ARM_VER (5)
-#   define ARCH_ARM_v5te
-#   define ARCH_STR "armv5te"
-# elif defined __ARM_ARCH_5__
-#   define ARCH_ARM_VER (5)
-#   define ARCH_ARM_v5
-#   define ARCH_STR "armv5"
-# elif defined __ARM_ARCH_4T__
-#   define ARCH_ARM_VER (4)
-#   define ARCH_ARM_v4t
-#   define ARCH_STR "armv4t"
-# elif defined __ARM_ARCH
-#   define ARCH_ARM_VER __ARM_ARCH
-#   if __ARM_ARCH >= 8
-#     define ARCH_ARM_v8
-#     if defined __arm64 || defined __arm64__
-#       define ARCH_ARM64
-#       define ARCH_STR "arm64"
-#     else
-#       define ARCH_STR "armv7s"
-#     endif
-#   elif __ARM_ARCH >= 7
-#     define ARCH_ARM_v7
-#     define ARCH_STR "armv7"
-#   elif __ARM_ARCH >= 6
-#     define ARCH_ARM_v6
-#     define ARCH_STR "armv6"
+#elif defined __i386__ || defined __i386 || defined _M_IX86
+# define ARCH_X86_32
+# if defined _M_IX86
+#   if (_M_IX86 <= 600)
+#     define ARCH_X86 (_M_IX86 / 100)
 #   else
-#     define ARCH_ARM_v5
-#     define ARCH_STR "armv5"
+#     define ARCH_X86 6
 #   endif
-# elif defined __aarch64__ && __aarch64__
-#   define ARCH_ARM_v8
-#   define ARCH_ARM64
-#   define ARCH_STR "arm64-v8a"
+# elif defined __i686__ || defined __athlon__ || defined __SSE__ || \
+       defined __pentiumpro__
+#   define ARCH_X86 6
+# elif defined __i586__ || defined __k6__ || defined __pentium__
+#   define ARCH_X86 5
+# elif defined __i486__ || defined __80486__
+#   define ARCH_X86 4
 # else
-#   error unknown arm arch VER
+#   define ARCH_X86 3
 # endif
-# if !defined ARCH_ARM64 && (defined __arm64 || defined __arm64__)
-#   define ARCH_ARM64
-#   ifndef ARCH_STR
-#     define ARCH_STR "arm64"
+#elif defined __x86_64__ || defined __x86_64 || defined __amd64__ || \
+      defined __amd64 || defined _M_X64 || defined _M_AMD64
+# define ARCH_X86_64
+# define ARCH_X86 6
+#elif defined __ia64__ || defined __ia64 || defined _M_IA64
+# define ARCH_IA64
+#elif defined __mips__ || defined __mips || defined _M_MRX000
+# define ARCH_MIPS
+# if defined _M_MRX000
+#   if (_M_MRX000 >= 10000)
+#     define ARCH_MIPS_IV
+#   else
+#     define ARCH_MIPS_III
 #   endif
 # endif
-# ifndef ARCH_STR
-#   define ARCH_STR "arm"
+# if defined _MIPS_ARCH_MIPS64 || (defined __mips && __mips - 0 >= 64) || \
+     (defined _MIPS_ISA && defined _MIPS_ISA_MIPS64 && \
+     __MIPS_ISA - 0 >= _MIPS_ISA_MIPS64)
+#   define ARCH_MIPS_64
+# elif defined _MIPS_ARCH_MIPS32 || (defined __mips && __mips - 0 >= 32) || \
+       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS32 && \
+       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS32)
+#   define ARCH_MIPS_32
+# elif defined _MIPS_ARCH_MIPS4 || (defined __mips && __mips - 0 >= 4) || \
+       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS4 && \
+       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS4)
+#   define ARCH_MIPS_IV
+# elif defined _MIPS_ARCH_MIPS3 || (defined __mips && __mips - 0 >= 3) || \
+       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS3 && \
+       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS3)
+#   define ARCH_MIPS_III
+# elif defined _MIPS_ARCH_MIPS2 || (defined __mips && __mips - 0 >= 2) || \
+       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS2 && \
+       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS2)
+#   define ARCH_MIPS_II
+# elif defined _MIPS_ARCH_MIPS1 || (defined __mips && __mips - 0 >= 1) || \
+     (defined _MIPS_ISA && defined _MIPS_ISA_MIPS1 && \
+     __MIPS_ISA - 0 >= _MIPS_ISA_MIPS1)
+#   define ARCH_MIPS_I
 # endif
-# if defined __thumb__
-#   define ARCH_ARM_THUMB
-#   define ARCH_STR_2 "_thumb"
+# if defined ARCH_MIPS_64
+#   define ARCH_MIPS_IV
 # endif
-# if defined __ARM_NEON__
-#   define ARCH_ARM_NEON
-#   define ARCH_STR_3 "_neon"
+# if defined ARCH_MIPS_IV
+#   define ARCH_MIPS_III
 # endif
-#elif defined mips || defined _mips || defined __mips__
-# define ARCH_MIPS
-# define ARCH_STR "mips"
-#else
-# error unknown arch
-# define ARCH_STR "unknown_arch"
+# if defined ARCH_MIPS_32 || defined ARCH_MIPS_III
+#   define ARCH_MIPS_II
+# endif
+# if defined ARCH_MIPS_II
+#   define ARCH_MIPS_I
+# endif
+#elif defined __powerpc__ || defined __powerpc || defined __ppc__ || \
+      defined __ppc || defined _ARCH_PPC || defined _ARCH_PWR || \
+      defined _ARCH_COM || defined _M_PPC || defined _M_MPPC
+# define ARCH_POWER
+# if defined __powerpc64__ || defined __powerpc64 || defined __ppc64__ || \
+     defined __ppc64 || defined __64BIT__ || defined __LP64__ || \
+     defined _LP64
+#   define ARCH_POWER_64
+# else
+#   define ARCH_POWER_32
+# endif
+#elif defined __sparc__ || defined __sparc
+# define ARCH_SPARC
+# if defined __sparc_v9__ || defined __sparcv9
+#   define ARCH_SPARC_V9
+# elif defined __sparc_v8__ || defined __sparcv8
+#   define ARCH_SPARC_V8
+# endif
+#elif defined __hppa__ || defined __hppa
+# define ARCH_HPPA
+# if defined _PA_RISC2_0 || defined __RISC2_0__ || defined __HPPA20__ || \
+     defined __PA8000__
+#   define ARCH_HPPA_64
+# else
+#   define ARCH_HPPA_32
+# endif
 #endif
 
-#if defined ARCH_x86 || defined ARCH_x64
+#if defined ARCH_x86 || defined ARCH_X86_64
 # if defined __SSE__
 #   define ARCH_SSE
-#   define ARCH_STR_2 "_sse"
 # endif
 # if defined __SSE2__
 #   define ARCH_SSE2
-#     undef ARCH_STR_2
-#   define ARCH_STR_2 "_sse2"
 # endif
 # if defined __SSE3__
 #   define ARCH_SSE3
-#     undef ARCH_STR_2
-#   define ARCH_STR_2 "_sse3"
 # endif
+# if defined __SSE4_1__
+#   define ARCH_SSE4
+# endif
+#endif
+
+#if defined __ARM_NEON__
+# define ARCH_NEON
+#endif
+
+#if defined __thumb__
+# define ARCH_THUMB
 #endif
 
 #if defined __VFP_FP__
 # define ARCH_VFP
-# define ARCH_STR_4 "_vfp"
 #endif
 
 #if defined __ELF__
 # define ARCH_ELF
-# define ARCH_STR_5 "_elf"
 #endif
 
 #if defined __MACH__
 # define ARCH_MACH
-# define ARCH_STR_5 "_mach"
-#endif
-
-#ifndef ARCH_STR_1
-# define ARCH_STR_1 ""
-#endif
-
-#ifndef ARCH_STR_2
-# define ARCH_STR_2 ""
-#endif
-
-#ifndef ARCH_STR_3
-# define ARCH_STR_3 ""
-#endif
-
-#ifndef ARCH_STR_4
-# define ARCH_STR_4 ""
-#endif
-
-#ifndef ARCH_STR_5
-# define ARCH_STR_5 ""
-#endif
-
-#ifndef ARCH_VER_STRING
-# define ARCH_VER_STRING ARCH_STR ARCH_STR_1 ARCH_STR_2 ARCH_STR_3 ARCH_STR_4 \
-  ARCH_STR_5
 #endif
 
 #endif /* !__UCC_ARCH_H */

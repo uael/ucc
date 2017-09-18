@@ -61,13 +61,16 @@
 # define ucc_has_attribute_weak 1
 # define ucc_has_attribute_always_inline 1
 # define ucc_has_attribute_noinline 1
-# define ucc_has_extension_attribute_const 1
 # define ucc_has_attribute_pure 1
-# define ucc_has_builtin___builtin_popcount 1
 # define ucc_has_attribute_aligned 1
 # define ucc_has_attribute_noreturn 1
 # define ucc_has_attribute___noreturn__ 1
 # define ucc_has_attribute_unused 1
+# define ucc_has_extension_attribute_const 1
+# define ucc_has_builtin___builtin_popcount 1
+# if CC_BT(2, 0)
+#   define ucc_has_builtin_expect 1
+# endif
 # if CC_BE(3, 0)
 #  define ucc_has_builtin___builtin_expect 1
 # endif
@@ -87,6 +90,8 @@
 # if defined __GNUC_STDC_INLINE__ || CC_BE(4, 3)
 #  define ucc_has_feature_c_inline 1
 # endif
+#elif defined CC_ICC
+#   define ucc_has_builtin_expect 1
 #endif
 
 #endif /* !__UCC_FEATURE_H */
