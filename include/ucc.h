@@ -31,6 +31,7 @@
 
 #include "ucc/arch.h"
 #include "ucc/attr.h"
+#include "ucc/builtin.h"
 #include "ucc/cc.h"
 #include "ucc/cpu.h"
 #include "ucc/cpu.h"
