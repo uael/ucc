@@ -4,69 +4,70 @@ cmake_policy(SET CMP0045 OLD)
 
 project(ucc C)
 set(CMAKE_C_STANDARD 90)
-set(${PROJECT_NAME}_VENDOR "uael")
-set(${PROJECT_NAME}_CONTACT "github.com/uael/ucc/issues")
-set(${PROJECT_NAME}_SUMMARY "uael Cross-Compiler c header module")
-set(${PROJECT_NAME}_MAJOR 0)
-set(${PROJECT_NAME}_MINOR 1)
-set(${PROJECT_NAME}_PATCH 0)
-set(${PROJECT_NAME}_README README.md)
-set(${PROJECT_NAME}_LICENSE LICENSE)
-set(${PROJECT_NAME}_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
-set(${PROJECT_NAME}_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/test)
+set(PROJ ${PROJECT_NAME})
+set(${PROJ}_VENDOR "uael")
+set(${PROJ}_CONTACT "github.com/uael/ucc/issues")
+set(${PROJ}_SUMMARY "uael Cross-Compiler c header module")
+set(${PROJ}_MAJOR 0)
+set(${PROJ}_MINOR 1)
+set(${PROJ}_PATCH 0)
+set(${PROJ}_README README.md)
+set(${PROJ}_LICENSE LICENSE)
+set(${PROJ}_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
+set(${PROJ}_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/test)
 
-get_directory_property(${PROJECT_NAME}_PARENT PARENT_DIRECTORY)
-if (NOT ${PROJECT_NAME}_PARENT)
-  set(${PROJECT_NAME}_DEVEL TRUE)
+get_directory_property(${PROJ}_PARENT PARENT_DIRECTORY)
+if (NOT ${PROJ}_PARENT)
+  set(${PROJ}_DEVEL TRUE)
 endif ()
 
-set(${PROJECT_NAME}_HEADERS)
-set(${PROJECT_NAME}_SOURCES)
+set(${PROJ}_HEADERS)
+set(${PROJ}_SOURCES)
 
-if (EXISTS ${${PROJECT_NAME}_INCLUDE_DIR})
-  file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS ${${PROJECT_NAME}_HEADERS}
-    ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}/*.h)
-  file(GLOB ${PROJECT_NAME}_MODULES ${${PROJECT_NAME}_MODULES}
-    ${${PROJECT_NAME}_INCLUDE_DIR}/*/)
-  foreach (MODULE ${${PROJECT_NAME}_MODULES})
-    file(GLOB_RECURSE ${PROJECT_NAME}_HEADERS ${${PROJECT_NAME}_HEADERS}
+if (EXISTS ${${PROJ}_INCLUDE_DIR})
+  file(GLOB_RECURSE ${PROJ}_HEADERS ${${PROJ}_HEADERS}
+    ${${PROJ}_INCLUDE_DIR}/${PROJ}/*.h)
+  file(GLOB ${PROJ}_MODULES ${${PROJ}_MODULES}
+    ${${PROJ}_INCLUDE_DIR}/*/)
+  foreach (MODULE ${${PROJ}_MODULES})
+    file(GLOB_RECURSE ${PROJ}_HEADERS ${${PROJ}_HEADERS}
       ${MODULE}/*.h)
   endforeach ()
 endif ()
 
-if (EXISTS ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}.h)
-  set(${PROJECT_NAME}_HEADER ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}.h)
+if (EXISTS ${${PROJ}_INCLUDE_DIR}/${PROJ}.h)
+  set(${PROJ}_HEADER ${${PROJ}_INCLUDE_DIR}/${PROJ}.h)
 else ()
-  set(${PROJECT_NAME}_HEADER)
+  set(${PROJ}_HEADER)
 endif ()
 
-add_library(${PROJECT_NAME} INTERFACE)
+add_library(${PROJ} INTERFACE)
 
-if (EXISTS ${${PROJECT_NAME}_INCLUDE_DIR})
-  target_include_directories(${PROJECT_NAME} INTERFACE
-    ${${PROJECT_NAME}_INCLUDE_DIR})
+if (EXISTS ${${PROJ}_INCLUDE_DIR})
+  target_include_directories(${PROJ} INTERFACE
+    ${${PROJ}_INCLUDE_DIR})
 endif ()
 
-if (${PROJECT_NAME}_DEVEL)
-  if (EXISTS ${${PROJECT_NAME}_TEST_DIR})
+#if (${PROJ}_DEVEL)
+  if (EXISTS ${${PROJ}_TEST_DIR})
     enable_testing()
 
-    file(GLOB ctest_SOURCES ${ctest_SOURCES} ${${PROJECT_NAME}_TEST_DIR}/*.c)
+    file(GLOB ctest_SOURCES ${ctest_SOURCES} ${${PROJ}_TEST_DIR}/*.c)
     foreach (ctest_SRC ${ctest_SOURCES})
       get_filename_component(ctest_NAME ${ctest_SRC} NAME_WE)
       add_executable(test_${ctest_NAME} ${ctest_SRC})
-      add_dependencies(test_${ctest_NAME} ${PROJECT_NAME})
-      target_link_libraries(test_${ctest_NAME} ${PROJECT_NAME})
+      add_dependencies(test_${ctest_NAME} ${PROJ})
+      target_link_libraries(test_${ctest_NAME} ${PROJ})
       add_test(${ctest_NAME} test_${ctest_NAME})
     endforeach ()
   endif ()
-endif ()
+#endif ()
 
-install(TARGETS ${PROJECT_NAME}
+install(TARGETS ${PROJ}
   RUNTIME DESTINATION bin
   ARCHIVE DESTINATION lib
-  PUBLIC_HEADER DESTINATION include/${PROJECT_NAME})
-if (EXISTS ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}.h)
-  install(FILES ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}.h
+  PUBLIC_HEADER DESTINATION include/${PROJ})
+if (EXISTS ${${PROJ}_INCLUDE_DIR}/${PROJ}.h)
+  install(FILES ${${PROJ}_INCLUDE_DIR}/${PROJ}.h
     DESTINATION include)
 endif ()
