@@ -67,7 +67,7 @@
 #elif defined CC_MSVC || defined CC_INTEL
 # define FORCEINLINE __forceinline __inline__
 #else
-# define FORCEINLINE static __inline__
+# define FORCEINLINE __inline__
 #endif
 
 #if __has_feature(stdnoreturn_h) || __has_include("stdnoreturn.h")
