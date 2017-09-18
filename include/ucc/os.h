@@ -63,6 +63,10 @@
 #elif defined __WIN32__
 # define OS_WIN __WIN32__
 # define OS_WIN32 OS_WIN
+#elif defined sun
+# define OS_SOLARIS sun
+#elif defined __sun
+# define OS_SOLARIS __sun
 #else
 # define OS_UNKNOWN
 #endif
