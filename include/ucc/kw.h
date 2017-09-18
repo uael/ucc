@@ -46,7 +46,7 @@
 # define __asm__ __asm
 # define __inline__ __inline
 # define __packed__(...) __pragma(pack(push, 1)) __VA_ARGS__ __pragma(pack(pop))
-# define __aligned__(a) __declspec(align(a))
+# define __align__(a) __declspec(align(a))
 # define __alignof__(ty) __alignof(ty)
 # define __cdecl__ __cdecl
 # define __stdcall__ __stdcall
@@ -56,7 +56,7 @@
 # define __asm__ __asm__
 # define __inline__ __inline__
 # define __packed__(...) __attribute__((packed, aligned(1))) __VA_ARGS__
-# define __aligned__(a) __attribute__((aligned(a)))
+# define __align__(a) __attribute__((aligned(a)))
 # define __alignof__(ty) __alignof__(ty)
 # if defined __x86_64 || defined __amd64__ || defined __amd64 \
   || defined _M_IA64 || defined _M_X64
@@ -74,7 +74,7 @@
 # define __asm__
 # define __inline__ inline
 # define __packed__(...) __VA_ARGS__
-# define __aligned__(a)
+# define __align__(a)
 # define __alignof__(ty)
 # define __cdecl__
 # define __stdcall__
@@ -86,11 +86,11 @@
  * the cpu byte alignment.
  */
 #if (CPU_BYTE == 8)
-# define __cpu_aligned__ __aligned__(8)
+# define __cpu_aligned__ __align__(8)
 #elif (CPU_BYTE == 4)
-# define __cpu_aligned__ __aligned__(4)
+# define __cpu_aligned__ __align__(4)
 #elif (CPU_BYTE == 2)
-# define __cpu_aligned__ __aligned__(2)
+# define __cpu_aligned__ __align__(2)
 #else
 # error unknown cpu bytes
 #endif
