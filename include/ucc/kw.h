@@ -98,7 +98,7 @@
 #ifdef __cplusplus
 # define __extern_c__ extern "C"
 #else
-# define __extern_c__
+# define __extern_c__ extern
 #endif
 
 #if __has_feature(c_thread_local)
