@@ -71,8 +71,7 @@
 #endif
 
 #if __has_feature(stdnoreturn_h) || __has_include("stdnoreturn.h")
-# include <stdnoreturn.h>
-# define NORETURN noreturn
+# define NORETURN _Noreturn
 #elif __has_attribute(noreturn) || (defined CC_GCC && CC_GCC >= 20700UL)
 # define NORETURN __attribute__((__noreturn__))
 #elif defined __STDC__ && __STDC_VERSION__ >= 201112L
