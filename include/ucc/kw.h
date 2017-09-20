@@ -40,7 +40,7 @@
 #define __volatile__ __volatile
 #define __func__ __FUNCTION__
 #define __file__ __FILE__
-#define __line____LINE__
+#define __line__ __LINE__
 
 #if defined CC_MSVC || defined CC_ICC
 # define __asm__ __asm
@@ -98,7 +98,7 @@
 #ifdef __cplusplus
 # define __extern_c__ extern "C"
 #else
-# define __extern_c__ extern
+# define __extern_c__
 #endif
 
 #if __has_feature(c_thread_local)
