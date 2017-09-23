@@ -23,21 +23,17 @@
  * SOFTWARE.
  */
 
-/*!@file ucc.h
+/*!@file ucc/pp.h
  * @author uael
  */
-#ifndef __UCC_H
-# define __UCC_H
+#ifndef __UCC_PP_H
+# define __UCC_PP_H
 
-#include "ucc/arch.h"
-#include "ucc/attr.h"
-#include "ucc/builtin.h"
-#include "ucc/cc.h"
-#include "ucc/cpu.h"
-#include "ucc/cpu.h"
-#include "ucc/feature.h"
-#include "ucc/kw.h"
-#include "ucc/os.h"
-#include "ucc/pp.h"
+#define COUNT_OF(x) (sizeof(x)/sizeof(*(x)))
 
-#endif /* !__UCC_H */
+#define init(T, ...) ((T) {__VA_ARGS__})
+#define new(T, ...) (&init(T, __VA_ARGS__))
+#define vec(T, ...) ((T[]) {__VA_ARGS__})
+#define array(T, ...) vec(T, __VA_ARGS__), COUNT_OF(vec(T, __VA_ARGS__))
+
+#endif /* !__UCC_PP_H */
