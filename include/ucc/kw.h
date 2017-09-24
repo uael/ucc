@@ -101,6 +101,18 @@
 # define __extern_c__
 #endif
 
+#if __has_attribute(visibility)
+# define __export_link__ __attribute__((visibility("default")))
+#else
+# define __export_link__
+#endif
+
+#ifdef __cplusplus
+# define __export__ extern "C" __export_link__
+#else
+# define __export__ extern __export_link__
+#endif
+
 #if __has_feature(c_thread_local)
 # define __thread_local__ _Thread_local
 #elif defined CC_GCC
