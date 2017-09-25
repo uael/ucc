@@ -33,13 +33,13 @@
 
 #if defined CC_MSVC
 # define EXPORT __declspec(dllexport)
-#elif defined CC_CLANG || (defined CC_GCC && CC_BE(3, 3))
+#elif defined CC_CLANG || (defined CC_GCC && VERNO_GE(CC_GCC, 3, 3))
 # define EXPORT __attribute__((visibility("default")))
 #else
 # define EXPORT
 #endif
 
-#if defined CC_CLANG || (defined CC_GCC && CC_BE(3, 0))
+#if defined CC_CLANG || (defined CC_GCC && VERNO_GE(CC_GCC, 3, 0))
 # define DEPRECATED __attribute__((deprecated))
 #elif defined CC_MSVC && CC_MSVC >= 1300
 # define DEPRECATED __declspec(deprecated)

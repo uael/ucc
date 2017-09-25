@@ -34,10 +34,12 @@
 #include "ucc/builtin.h"
 #include "ucc/cc.h"
 #include "ucc/cpu.h"
-#include "ucc/cpu.h"
 #include "ucc/feature.h"
 #include "ucc/kw.h"
 #include "ucc/os.h"
+#include "ucc/plat.h"
 #include "ucc/pp.h"
+#include "ucc/std.h"
+#include "ucc/verno.h"
 
 #endif /* !__UCC_H */

@@ -29,6 +29,16 @@
 #ifndef __UCC_PP_H
 # define __UCC_PP_H
 
+/*!@def STRINGIFY(x)
+ * A macro which stringifies its argument.
+ * @param[in] x All the tokens which have to be stringified.
+ * @return An expression of type pointer to char.
+ */
+#ifndef STRINGIFY
+# define STRINGIFY_EX(x) #x
+# define STRINGIFY(x) STRINGIFY_EX(x)
+#endif
+
 #define COUNT_OF(x) (sizeof(x)/sizeof(*(x)))
 
 #define init(T, ...) ((T) {__VA_ARGS__})

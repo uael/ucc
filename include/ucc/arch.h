@@ -29,185 +29,254 @@
 #ifndef __UCC_ARCH_H
 # define __UCC_ARCH_H
 
-#include "kw.h"
-
-#if defined __alpha__ || defined __alpha || defined _M_ALPHA
-# define ARCH_ALPHA
-#elif defined __arm__ || defined __TARGET_ARCH_ARM || defined _ARM || \
-      defined _M_ARM_ || defined __arm || defined __aarch64__
-# if defined __aarch64__
-#   define ARCH_ARM_64
+#if defined __alpha__ \
+  || defined __alpha \
+  || defined _M_ALPHA
+# if defined __alpha_ev4__
+#   define ARCH_ALPHA VERNO(4, 0, 0)
+# elif defined __alpha_ev5__
+#   define ARCH_ALPHA VERNO(5, 0, 0)
+# elif defined __alpha_ev6__
+#   define ARCH_ALPHA VERNO(6, 0, 0)
 # else
-#   define ARCH_ARM_32
+#   define ARCH_ALPHA 0
 # endif
+#endif
+
+#if defined __arm__ \
+  || defined __TARGET_ARCH_ARM \
+  || defined __TARGET_ARCH_THUMB \
+  || defined _ARM \
+  || defined _M_ARM_ \
+  || defined _M_ARM64 \
+  || defined __arm \
+  || defined __arm64 \
+  || defined __aarch64__ \
+  || defined __thumb__
 # if defined __ARM_ARCH && __ARM_ARCH > 1
-#   define ARCH_ARM __ARM_ARCH
+#   define ARCH_ARM VERNO(__ARM_ARCH, 0, 0)
 # elif defined __TARGET_ARCH_ARM && __TARGET_ARCH_ARM > 1
-#   define ARCH_ARM __TARGET_ARCH_ARM
+#   define ARCH_ARM VERNO(__TARGET_ARCH_ARM, 0, 0)
+# elif defined __TARGET_ARCH_THUMB && __TARGET_ARCH_THUMB > 1
+#   define ARCH_ARM VERNO(__TARGET_ARCH_THUMB, 0, 0)
 # elif defined _M_ARM && _M_ARM > 1
-#   define ARCH_ARM _M_ARM
-# elif defined __ARM64_ARCH_8__ || defined __aarch64__ || \
-       defined __CORE_CORTEXAV8__
-#   define ARCH_ARM 8
-#   define ARCH_ARM_V8
+#   define ARCH_ARM VERNO(_M_ARM, 0, 0)
+# elif defined __ARM64_ARCH_8__ \
+  || defined __aarch64__ \
+  || defined __CORE_CORTEXAV8__
+#   define ARCH_ARM VERNO(8, 0, 0)
 # elif defined __ARM_ARCH_7__ || defined __ARM_ARCH_7A__ || \
        defined __ARM_ARCH_7R__ || defined __ARM_ARCH_7M__ || \
        defined __ARM_ARCH_7S__ || defined _ARM_ARCH_7 || \
        defined __CORE_CORTEXA__
-#   define ARCH_ARM 7
-#   define ARCH_ARM_V7
+#   define ARCH_ARM VERNO(7, 0, 0)
 # elif defined __ARM_ARCH_6__ || defined __ARM_ARCH_6J__ || \
        defined __ARM_ARCH_6T2__ || defined __ARM_ARCH_6Z__ || \
        defined __ARM_ARCH_6K__ || defined __ARM_ARCH_6ZK__ || \
        defined __ARM_ARCH_6M__
-#   define ARCH_ARM 6
-#   define ARCH_ARM_V6
+#   define ARCH_ARM VERNO(6, 0, 0)
 # elif defined __ARM_ARCH_5__ || defined __ARM_ARCH_5E__ || \
        defined __ARM_ARCH_5T__ || defined __ARM_ARCH_5TE__ || \
        defined __ARM_ARCH_5TEJ__
-#   define ARCH_ARM 5
-#   define ARCH_ARM_V5
+#   define ARCH_ARM VERNO(5, 0, 0)
 # elif defined __ARM_ARCH_4__ || defined __ARM_ARCH_4T__
-#   define ARCH_ARM 4
-#   define ARCH_ARM_V4
+#   define ARCH_ARM VERNO(4, 0, 0)
 # elif defined __ARM_ARCH_3__ || defined __ARM_ARCH_3M__
-#   define ARCH_ARM 3
-#   define ARCH_ARM_V3
+#   define ARCH_ARM VERNO(3, 0, 0)
 # elif defined __ARM_ARCH_2__
-#   define ARCH_ARM 2
-#   define ARCH_ARM_V2
+#   define ARCH_ARM VERNO(2, 0, 0)
 # endif
-#elif defined __i386__ || defined __i386 || defined _M_IX86
-# define ARCH_X86_32
-# if defined _M_IX86
-#   if (_M_IX86 <= 600)
-#     define ARCH_X86 (_M_IX86 / 100)
-#   else
-#     define ARCH_X86 6
-#   endif
-# elif defined __i686__ || defined __athlon__ || defined __SSE__ || \
-       defined __pentiumpro__
-#   define ARCH_X86 6
-# elif defined __i586__ || defined __k6__ || defined __pentium__
-#   define ARCH_X86 5
-# elif defined __i486__ || defined __80486__
-#   define ARCH_X86 4
+#endif
+
+#if defined(__bfin__) || defined(__BFIN__) || defined(bfin) || defined(BFIN)
+# define ARCH_BLACKFIN 0
+#endif
+
+#if defined(__convex__)
+# if defined(__convex_c1__)
+#   define ARCH_CONVEX VERNO(1, 0, 0)
+# elif defined(__convex_c2__)
+#   define ARCH_CONVEX VERNO(2, 0, 0)
+# elif defined(__convex_c32__)
+#   define ARCH_CONVEX VERNO(3, 2, 0)
+# elif defined(__convex_c34__)
+#   define ARCH_CONVEX VERNO(3, 4, 0)
+# elif defined(__convex_c38__)
+#   define ARCH_CONVEX VERNO(3, 8, 0)
 # else
-#   define ARCH_X86 3
+#   define ARCH_CONVEX 0
 # endif
-#elif defined __x86_64__ || defined __x86_64 || defined __amd64__ || \
-      defined __amd64 || defined _M_X64 || defined _M_AMD64
-# define ARCH_X86_64
-# define ARCH_X86 6
-#elif defined __ia64__ || defined __ia64 || defined _M_IA64
-# define ARCH_IA64
-#elif defined __mips__ || defined __mips || defined _M_MRX000
-# define ARCH_MIPS
+#endif
+
+#if defined(__ia64__) || defined(_IA64) || \
+    defined(__IA64__) || defined(__ia64) || \
+    defined(_M_IA64) || defined(__itanium__)
+# define BOOST_ARCH_IA64 0
+#endif
+
+#if defined(__m68k__) || defined(M68000)
+# if defined(__mc68060__) || defined(mc68060) || defined(__mc68060)
+#   define ARCH_M68K VERNO(6,0,0)
+# elif defined(__mc68040__) || defined(mc68040) || defined(__mc68040)
+#   define ARCH_M68K VERNO(4,0,0)
+# elif defined(__mc68030__) || defined(mc68030) || defined(__mc68030)
+#   define ARCH_M68K VERNO(3,0,0)
+# elif defined(__mc68020__) || defined(mc68020) || defined(__mc68020)
+#   define ARCH_M68K VERNO(2,0,0)
+# elif defined(__mc68010__) || defined(mc68010) || defined(__mc68010)
+#   define ARCH_M68K VERNO(1,0,0)
+# elif defined(__mc68000__) || defined(mc68000) || defined(__mc68000)
+#   define ARCH_M68K 0
+# else
+#   define ARCH_M68K 0
+# endif
+#endif
+
+#if defined(__mips__) || defined(__mips) || defined(__MIPS__) || \
+    defined _M_MRX000
 # if defined _M_MRX000
 #   if (_M_MRX000 >= 10000)
-#     define ARCH_MIPS_IV
+#     define ARCH_MIPS VERNO(4, 0, 0)
 #   else
-#     define ARCH_MIPS_III
+#     define ARCH_MIPS VERNO(3, 0, 0)
+#   endif
+# else
+#   if defined _MIPS_ARCH_MIPS64 || (defined __mips && __mips - 0 >= 64) || \
+       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS64 && \
+       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS64)
+#     define ARCH_MIPS VERNO(4, 0, 0)
+#   elif defined _MIPS_ARCH_MIPS32 || (defined __mips && __mips - 0 >= 32) || \
+         (defined _MIPS_ISA && defined _MIPS_ISA_MIPS32 && \
+         __MIPS_ISA - 0 >= _MIPS_ISA_MIPS32)
+#     define ARCH_MIPS VERNO(2, 0, 0)
+#   elif defined _MIPS_ARCH_MIPS4 || (defined __mips && __mips - 0 >= 4) || \
+         (defined _MIPS_ISA && defined _MIPS_ISA_MIPS4 && \
+         __MIPS_ISA - 0 >= _MIPS_ISA_MIPS4)
+#     define ARCH_MIPS VERNO(4, 0, 0)
+#   elif defined _MIPS_ARCH_MIPS3 || (defined __mips && __mips - 0 >= 3) || \
+         (defined _MIPS_ISA && defined _MIPS_ISA_MIPS3 && \
+         __MIPS_ISA - 0 >= _MIPS_ISA_MIPS3)
+#     define ARCH_MIPS VERNO(3, 0, 0)
+#   elif defined _MIPS_ARCH_MIPS2 || (defined __mips && __mips - 0 >= 2) || \
+         (defined _MIPS_ISA && defined _MIPS_ISA_MIPS2 && \
+         __MIPS_ISA - 0 >= _MIPS_ISA_MIPS2)
+#     define ARCH_MIPS VERNO(2, 0, 0)
+#   elif defined _MIPS_ARCH_MIPS1 || (defined __mips && __mips - 0 >= 1) || \
+         (defined _MIPS_ISA && defined _MIPS_ISA_MIPS1 && \
+         __MIPS_ISA - 0 >= _MIPS_ISA_MIPS1)
+#     define ARCH_MIPS VERNO(1, 0, 0)
+#   else
+#     define ARCH_MIPS 0
 #   endif
 # endif
-# if defined _MIPS_ARCH_MIPS64 || (defined __mips && __mips - 0 >= 64) || \
-     (defined _MIPS_ISA && defined _MIPS_ISA_MIPS64 && \
-     __MIPS_ISA - 0 >= _MIPS_ISA_MIPS64)
-#   define ARCH_MIPS_64
-# elif defined _MIPS_ARCH_MIPS32 || (defined __mips && __mips - 0 >= 32) || \
-       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS32 && \
-       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS32)
-#   define ARCH_MIPS_32
-# elif defined _MIPS_ARCH_MIPS4 || (defined __mips && __mips - 0 >= 4) || \
-       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS4 && \
-       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS4)
-#   define ARCH_MIPS_IV
-# elif defined _MIPS_ARCH_MIPS3 || (defined __mips && __mips - 0 >= 3) || \
-       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS3 && \
-       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS3)
-#   define ARCH_MIPS_III
-# elif defined _MIPS_ARCH_MIPS2 || (defined __mips && __mips - 0 >= 2) || \
-       (defined _MIPS_ISA && defined _MIPS_ISA_MIPS2 && \
-       __MIPS_ISA - 0 >= _MIPS_ISA_MIPS2)
-#   define ARCH_MIPS_II
-# elif defined _MIPS_ARCH_MIPS1 || (defined __mips && __mips - 0 >= 1) || \
-     (defined _MIPS_ISA && defined _MIPS_ISA_MIPS1 && \
-     __MIPS_ISA - 0 >= _MIPS_ISA_MIPS1)
-#   define ARCH_MIPS_I
-# endif
-# if defined ARCH_MIPS_64
-#   define ARCH_MIPS_IV
-# endif
-# if defined ARCH_MIPS_IV
-#   define ARCH_MIPS_III
-# endif
-# if defined ARCH_MIPS_32 || defined ARCH_MIPS_III
-#   define ARCH_MIPS_II
-# endif
-# if defined ARCH_MIPS_II
-#   define ARCH_MIPS_I
-# endif
-#elif defined __powerpc__ || defined __powerpc || defined __ppc__ || \
-      defined __ppc || defined _ARCH_PPC || defined _ARCH_PWR || \
-      defined _ARCH_COM || defined _M_PPC || defined _M_MPPC
-# define ARCH_POWER
-# if defined __powerpc64__ || defined __powerpc64 || defined __ppc64__ || \
-     defined __ppc64 || defined __64BIT__ || defined __LP64__ || \
-     defined _LP64
-#   define ARCH_POWER_64
+#endif
+
+#if defined(__hppa__) || defined(__hppa) || defined(__HPPA__)
+# if defined(_PA_RISC1_0)
+#   define ARCH_PARISC VERNO(1,0,0)
+# elif defined(_PA_RISC1_1) || defined(__HPPA11__) || defined(__PA7100__)
+#   define ARCH_PARISC VERNO(1,1,0)
+# elif defined(_PA_RISC2_0) || defined(__RISC2_0__) || defined(__HPPA20__) ||
+       defined(__PA8000__)
+#   define ARCH_PARISC VERNO(2,0,0)
 # else
-#   define ARCH_POWER_32
+#   define ARCH_PARISC 0
 # endif
-#elif defined __sparc__ || defined __sparc
-# define ARCH_SPARC
-# if defined __sparc_v9__ || defined __sparcv9
-#   define ARCH_SPARC_V9
-# elif defined __sparc_v8__ || defined __sparcv8
-#   define ARCH_SPARC_V8
-# endif
-#elif defined __hppa__ || defined __hppa
-# define ARCH_HPPA
-# if defined _PA_RISC2_0 || defined __RISC2_0__ || defined __HPPA20__ || \
-     defined __PA8000__
-#   define ARCH_HPPA_64
+#endif
+
+#if defined(__powerpc) || defined(__powerpc__) || \
+    defined(__POWERPC__) || defined(__ppc__) || \
+    defined(_M_PPC) || defined(_ARCH_PPC) || \
+    defined(__PPCGECKO__) || defined(__PPCBROADWAY__) || \
+    defined(_XENON)
+# if defined(__ppc601__) || defined(_ARCH_601)
+#   define ARCH_PPC VERNO(6,1,0)
+# elif defined(__ppc603__) || defined(_ARCH_603)
+#   define ARCH_PPC VERNO(6,3,0)
+# elif defined(__ppc604__) || defined(__ppc604__)
+#   define ARCH_PPC VERNO(6,4,0)
 # else
-#   define ARCH_HPPA_32
+#   define ARCH_PPC 0
 # endif
 #endif
 
-#if defined ARCH_x86 || defined ARCH_X86_64
-# if defined __SSE__
-#   define ARCH_SSE
+#if defined(pyr)
+# define ARCH_PYRAMID 0
+#endif
+
+#if defined(__THW_RS6000) || defined(_IBMR2) || \
+    defined(_POWER) || defined(_ARCH_PWR) || \
+    defined(_ARCH_PWR2)
+# define ARCH_RS6000 0
+#endif
+
+#if defined(__sparc__) || defined(__sparc)
+# if defined(__sparcv9)
+#   define ARCH_SPARC VERNO(9,0,0)
+# elif defined(__sparcv8)
+#   define ARCH_SPARC VERNO(8,0,0)
+# else
+#   define BOOST_ARCH_SPARC 0
 # endif
-# if defined __SSE2__
-#   define ARCH_SSE2
+#endif
+
+#if defined(__sh__)
+# if defined(__SH5__)
+#   define ARCH_SH VERNO(5,0,0)
+# elif defined(__SH4__)
+#   define ARCH_SH VERNO(4,0,0)
+# elif defined(__sh3__) || defined(__SH3__)
+#   define ARCH_SH VERNO(3,0,0)
+# elif defined(__sh2__)
+#   define ARCH_SH VERNO(2,0,0)
+# elif defined(__sh1__)
+#   define ARCH_SH VERNO(1,0,0)
+# else
+#   define BOOST_ARCH_SH 0
 # endif
-# if defined __SSE3__
-#   define ARCH_SSE3
+#endif
+
+#if defined(__370__) || defined(__THW_370__)
+# define ARCH_SYS370 0
+#endif
+
+#if defined(__s390__) || defined(__s390x__)
+# define ARCH_SYS390 0
+#endif
+
+#if defined(i386) || defined(__i386__) || \
+    defined(__i486__) || defined(__i586__) || \
+    defined(__i686__) || defined(__i386) || \
+    defined(_M_IX86) || defined(_X86_) || \
+    defined(__THW_INTEL__) || defined(__I86__) || \
+    defined(__INTEL__)
+# define ARCH_X86 0
+# if defined(__I86__)
+#   define ARCH_X86_32 VERNO(__I86__, 0, 0)
+# elif defined(_M_IX86)
+#   define ARCH_X86_32 VERNO_10_VV00(_M_IX86)
+# elif defined(__i686__) || defined __athlon__ || defined __SSE__ || \
+       defined __pentiumpro__
+#   define ARCH_X86_32 VERNO(6,0,0)
+# elif defined(__i586__) || defined __k6__ || defined __pentium__
+#   define ARCH_X86_32 VERNO(5,0,0)
+# elif defined(__i486__) || defined __80486__
+#   define ARCH_X86_32 VERNO(4,0,0)
+# elif defined(__i386__)
+#   define ARCH_X86_32 VERNO(3,0,0)
+# else
+#   define ARCH_X86_32 0
 # endif
-# if defined __SSE4_1__
-#   define ARCH_SSE4
-# endif
 #endif
 
-#if defined __ARM_NEON__
-# define ARCH_NEON
+#if defined __x86_64__ || defined __x86_64 || defined __amd64__ || \
+    defined __amd64 || defined _M_X64 || defined _M_AMD64
+# define ARCH_X86 0
+# define ARCH_X86_64 0
 #endif
 
-#if defined __thumb__
-# define ARCH_THUMB
-#endif
-
-#if defined __VFP_FP__
-# define ARCH_VFP
-#endif
-
-#if defined __ELF__
-# define ARCH_ELF
-#endif
-
-#if defined __MACH__
-# define ARCH_MACH
+#if defined(__SYSC_ZARCH__)
+# define ARCH_Z 0
 #endif
 
 #endif /* !__UCC_ARCH_H */

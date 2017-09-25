@@ -29,9 +29,7 @@
 #ifndef __UCC_FEATURE_H
 # define __UCC_FEATURE_H
 
-#include "cc.h"
-#include "cpu.h"
-#include "os.h"
+#include "std.h"
 
 #ifndef __has_feature
 # define __has_feature(x) ucc_has_feature_##x
@@ -54,7 +52,7 @@
 #endif
 
 #if defined CC_CLANG
-# if CC_BT(3, 2)
+# if VERNO_GT(CC_CLANG, 3, 2)
 #   define ucc_has_feature_stdnoreturn_h 1
 # endif
 #elif defined CC_GCC
@@ -68,26 +66,26 @@
 # define ucc_has_attribute_unused 1
 # define ucc_has_extension_attribute_const 1
 # define ucc_has_builtin___builtin_popcount 1
-# if CC_BT(2, 0)
+# if VERNO_GT(CC_GCC, 2, 0)
 #   define ucc_has_builtin_expect 1
 # endif
-# if CC_BE(3, 0)
+# if VERNO_GT(CC_GCC, 3, 0)
 #  define ucc_has_builtin___builtin_expect 1
 # endif
-# if CC_BE(4, 6)
+# if VERNO_GE(CC_GCC, 4, 6)
 #  define ucc_has_attribute_externally_visible 1
 # endif
-# if CC_BE(4, 7)
+# if VERNO_GE(CC_GCC, 4, 7)
 #  define ucc_has_feature_stdnoreturn_h 1
 #  define ucc_has_feature_stdalign_h 1
 # endif
-# if CC_BE(4, 9)
+# if VERNO_GE(CC_GCC, 4, 9)
 #   define ucc_has_feature_c_thread_local 1
 # endif
-# if defined __GNUC_GNU_INLINE__ || CC_LT(4, 3)
+# if defined __GNUC_GNU_INLINE__ || VERNO_Lt(CC_GCC, 4, 3)
 #  define ucc_has_attribute_gnu_inline 1
 # endif
-# if defined __GNUC_STDC_INLINE__ || CC_BE(4, 3)
+# if defined __GNUC_STDC_INLINE__ || VERNO_GE(CC_GCC, 4, 3)
 #  define ucc_has_feature_c_inline 1
 # endif
 #elif defined CC_ICC

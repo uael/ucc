@@ -29,99 +29,358 @@
 #ifndef __UCC_OS_H
 # define __UCC_OS_H
 
+#include "cc.h"
+
+#if defined _AIX || defined __TOS_AIX__
+# if defined _AIX43
+#   define OS_AIX VERNO(4, 3, 0)
+# elif defined _AIX41
+#   define OS_AIX VERNO(4, 1, 0)
+# elif defined _AIX32
+#   define OS_AIX VERNO(3, 2, 0)
+# elif defined _AIX3
+#   define OS_AIX VERNO(3, 0, 0)
+# else
+#   define OS_AIX 0
+# endif
+#endif
+
+#if defined __amigaos__ \
+  || defined AMIGA
+# define OS_AMIGA 0
+#endif
+
+#if defined __ANDROID__
+# define OS_ANDROID 0
+#endif
+
+#if defined __BEOS__
+# define OS_BEOS 0
+#endif
+
+#if defined BSD
+  || defined _SYSTYPE_BSD
+# include <sys/param.h>
+# if defined BSD4_4
+#   define OS_BSD VERNO(4, 4, 0)
+# elif defined BSD4_3
+#   define OS_BSD VERNO(4, 3, 0)
+# elif defined BSD4_2
+#   define OS_BSD VERNO(4, 2, 0)
+# elif defined BSD
+#   define OS_BSD VERNO_10_VVRR(BSD)
+# else
+#   define OS_BSD 0
+# endif
+#endif
+
+#if defined bsdi \
+  || defined __bsdi__
+# define OS_BSDI 0
+#endif
+
+#if defined __CYGWIN__ || defined __CYGWIN32__ || defined __CYGWIN64__
+# define OS_CYGWIN 0
+#endif
+
+#if defined _UNICOS \
+  || defined _CRAY
+# define OS_CRAY 0
+#endif
+
+#if defined DGUX \
+  || defined __DGUX__ \
+  || defined __dgux__
+# define OS_DGUX 0
+#endif
+
+#if defined __DragonFly__
+# define OS_DRAGONFLY 0
+#endif
+
+#if defined __FreeBSD__
+# if defined __FreeBSD_version
+#   if __FreeBSD_version < 500000
+#     define OS_FREEBSD VERNO_10_VRP000(__FreeBSD_version)
+#   else
+#     define OS_FREEBSD VERNO_10_VRR000(__FreeBSD_version)
+#   endif
+# else
+#   define OS_FREEBSD 0
+# endif
+#endif
+
+#if defined __HAIKU__
+# define OS_HAIKU 0
+#endif
+
+#if defined hpux \
+  || defined _hpux \
+  || defined __hpux \
+  || defined _HPUX_SOURCE
+# define OS_HPUX 0
+#endif
+
+#if defined __GNU__
+# define OS_HURD
+#endif
+
+#if defined __APPLE__ && defined __MACH__ && \
+    defined __ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__
+# define OS_IOS 0
+#endif
+
+#if defined sgi \
+  || defined __sgi \
+  || defined mips \
+  || defined _SGI_SOURCE
+# define OS_IRIX 0
+#endif
+
+#if defined linux \
+  || defined __linux \
+  || defined __linux__
+# define OS_LINUX 0
+#endif
+
+#if defined macintosh \
+  || defined Macintosh \
+  || defined __MACOS__
+# define OS_MAC VERNO(9, 0, 0)
+#endif
+
+#if defined __MACOSX__ \
+  || (defined __APPLE__ && defined __MACH__)
+# define OS_MAC VERNO(10, 0, 0)
+#endif
+
+#if defined mpeix \
+  || defined __mpexl
+# define OS_MPEIX 0
+#endif
+
+#if defined MSDOS \
+  || defined __MSDOS__ \
+  || defined _MSDOS \
+  || defined __DOS__
+# define OS_MSDOS 0
+#endif
+
+#if defined __MSYS__
+# define OS_MSYS 0
+#endif
+
+#if defined __NetBSD__ || defined __NETBSD__
+# if defined __NETBSD__
+#   if defined __NETBSD_version
+#     if __NETBSD_version < 500000
+#       define OS_NETBSD VERNO_10_VRP000(__NETBSD_version)
+#     else
+#       define OS_NETBSD VERNO_10_VRR000(__NETBSD_version)
+#     endif
+#   else
+#     define OS_NETBSD 0
+#   endif
+# elif defined __NetBSD__
+#   if defined NetBSD0_8
+#     define OS_NETBSD VERNO(0, 8, 0)
+#   elif defined NetBSD0_9
+#     define OS_NETBSD VERNO(0, 9, 0)
+#   elif defined NetBSD1_0
+#     define OS_NETBSD VERNO(1, 0, 0)
+#   elif defined __NetBSD_Version
+#     define OS_NETBSD VERNO_10_VVRR00PP00(__NetBSD_Version)
+#   else
+#     define OS_NETBSD 0
+#   endif
+# endif
+#endif
+
+#if defined __OpenBSD__
+# if defined OpenBSD2_0
+#   define OS_OPENBSD VERNO(2,0,0)
+# elif defined OpenBSD2_1
+#   define OS_OPENBSD VERNO(2,1,0)
+# elif defined OpenBSD2_2
+#   define OS_OPENBSD VERNO(2,2,0)
+# elif defined OpenBSD2_3
+#   define OS_OPENBSD VERNO(2,3,0)
+# elif defined OpenBSD2_4
+#   define OS_OPENBSD VERNO(2,4,0)
+# elif defined OpenBSD2_5
+#   define OS_OPENBSD VERNO(2,5,0)
+# elif defined OpenBSD2_6
+#   define OS_OPENBSD VERNO(2,6,0)
+# elif defined OpenBSD2_7
+#   define OS_OPENBSD VERNO(2,7,0)
+# elif defined OpenBSD2_8
+#   define OS_OPENBSD VERNO(2,8,0)
+# elif defined OpenBSD2_9
+#   define OS_OPENBSD VERNO(2,9,0)
+# elif defined OpenBSD3_0
+#   define OS_OPENBSD VERNO(3,0,0)
+# elif defined OpenBSD3_1
+#   define OS_OPENBSD VERNO(3,1,0)
+# elif defined OpenBSD3_2
+#   define OS_OPENBSD VERNO(3,2,0)
+# elif defined OpenBSD3_3
+#   define OS_OPENBSD VERNO(3,3,0)
+# elif defined OpenBSD3_4
+#   define OS_OPENBSD VERNO(3,4,0)
+# elif defined OpenBSD3_5
+#   define OS_OPENBSD VERNO(3,5,0)
+# elif defined OpenBSD3_6
+#   define OS_OPENBSD VERNO(3,6,0)
+# elif defined OpenBSD3_7
+#   define OS_OPENBSD VERNO(3,7,0)
+# elif defined OpenBSD3_8
+#   define OS_OPENBSD VERNO(3,8,0)
+# elif defined OpenBSD3_9
+#   define OS_OPENBSD VERNO(3,9,0)
+# elif defined OpenBSD4_0
+#   define OS_OPENBSD VERNO(4,0,0)
+# elif defined OpenBSD4_1
+#   define OS_OPENBSD VERNO(4,1,0)
+# elif defined OpenBSD4_2
+#   define OS_OPENBSD VERNO(4,2,0)
+# elif defined OpenBSD4_3
+#   define OS_OPENBSD VERNO(4,3,0)
+# elif defined OpenBSD4_4
+#   define OS_OPENBSD VERNO(4,4,0)
+# elif defined OpenBSD4_5
+#   define OS_OPENBSD VERNO(4,5,0)
+# elif defined OpenBSD4_6
+#   define OS_OPENBSD VERNO(4,6,0)
+# elif defined OpenBSD4_7
+#   define OS_OPENBSD VERNO(4,7,0)
+# elif defined OpenBSD4_8
+#   define OS_OPENBSD VERNO(4,8,0)
+# elif defined OpenBSD4_9
+#   define OS_OPENBSD VERNO(4,9,0)
+# else
+#   define OS_OPENBSD 0
+# endif
+#endif
+
+#if defined OS2 \
+  || defined _OS2 \
+  || defined __OS2__ \
+  || defined __TOS_OS2__
+# define OS_OS2 0
+#endif
+
+#if defined __OS400__
+# define OS_OS400 0
+#endif
+
+#if defined __osf__ \
+  || defined __osf \
+  || defined CC_DECC
+# define OS_OSF 0
+#endif
+
 #if defined __pnacl__
-# define OS_PNACL __pnacl__
-#elif defined __ANDROID__
-# define OS_ANDROID __ANDROID__
-#elif defined __TIZEN__
-# define OS_TIZEN __TIZEN__
-#elif defined __APPLE__ && \
-      (defined __GNUC__ || defined __xlC__ || defined __xlc__)
-# define OS_DARWIN
-# define OS_BSD4
-# ifdef __LP64__
-#   define OS_DARWIN64
-# else
-#   define OS_DARWIN32
-# endif
-# elif defined Macintosh || defined macintosh
-# define OS_MAC9
-#elif defined __MSYS__
-# define OS_MSYS
-#elif defined __CYGWIN__
-# define OS_CYGWIN
-#elif defined _WIN64 || defined _M_X64 || defined _M_AMD64
-# define OS_WIN64
-#elif defined __WIN32__ || defined _WIN32 || defined WIN32
-# define OS_WIN
-#elif defined __linux || defined __linux__
-# define OS_LINUX
-#elif defined __FreeBSD__
-# define OS_FREEBSD
-# define OS_BSD4
-#elif defined __DragonFly__
-# define OS_DRAGONFLY
-# define OS_BSD4
-#elif defined __NetBSD__
-# define OS_NETBSD
-# define OS_BSD4
-#elif defined __OpenBSD__
-# define OS_OPENBSD
-# define OS_BSD4
-#elif defined _AIX
-# define OS_AIX
-#elif defined hpux || defined __hpux
-# define OS_HPUX
-#elif defined __osf__ || defined __osf
-# define OS_TRU64
-#elif defined __sun || defined sun
-# define OS_SOLARIS
-#elif defined __QNXNTO__
+# define OS_PNACL 0
+#endif
+
+#if defined pyr
+# define OS_PYRAMID 0
+#endif
+
+#if defined __QNX__ \
+  || defined __QNXNTO__
 # ifdef __BLACKBERRY10__
-#   define OS_BB10
+#   define OS_BB VERNO(10, 0, 0)
+# endif
+# if defined _NTO_VERSION
+#   define OS_QNX VERNO_10_VVRR(_NTO_VERSION)
+# elif defined __QNX__
+#   define OS_QNX VERNO(4, 0, 0)
 # else
-#   define OS_QNX6
-# endif
-#elif defined __QNX__
-# define OS_QNX
-#elif defined _SCO_DS
-# define OS_SCO
-#elif defined __USLC__ || defined __UNIXWARE__
-# define OS_UNIXWARE
-#elif defined __svr4__ && defined i386
-# define OS_UNIXWARE
-#elif defined __sgi || defined sgi
-# define OS_IRIX
-#elif defined __HAIKU__
-# define OS_HAIKU
-#elif defined __SYLLABLE__
-# define OS_SYLLABLE
-#elif defined __BEOS__
-# define OS_BEOS
-#elif defined __OS2__
-# define OS_OS2
-#elif defined VMS || defined __VMS
-# define OS_VMS
-#endif
-
-#ifdef OS_WIN64
-# define OS_WIN
-#endif
-
-#if defined OS_DARWIN
-# define OS_MAC
-# if defined OS_DARWIN64
-#   define OS_MAC64
-# elif defined OS_DARWIN32
-#   define OS_MAC32
+#   define OS_QNX 0
 # endif
 #endif
 
-#if defined OS_WIN || defined OS_MAC9 || defined OS_HAIKU || \
-  defined OS_BEOS || defined OS_OS2 || defined OS_VMS || defined OS_PNACL
-# undef OS_UNIX
-#elif !defined OS_UNIX
-# define OS_UNIX
+#if defined M_I386 \
+  || defined M_XENIX \
+  || defined _SCO_DS \
+  || defined _SCO_C_DIALECT \
+  || defined CC_SCO
+# define OS_SCO 0
+#endif
+
+#if defined _SEQUENT_ \
+  || defined sequent
+# define OS_SEQUENT 0
+#endif
+
+#if defined sinix
+# define OS_SINIX 0
+#endif
+
+#if defined sun \
+  || defined __sun__ \
+  || defined CC_SUNPRO
+# if defined __SVR4 || defined __svr4__
+#   define OS_SOLARIS 0
+# else
+#   define OS_SUNOS 0
+# endif
+#endif
+
+#if defined __SYLLABLE__
+# define OS_SYLLABLE 0
+#endif
+
+#if defined __TIZEN__
+# define OS_TIZEN 0
+#endif
+
+#if defined ultrix \
+  || defined __ultrix \
+  || defined __ultrix__
+# define OS_ULTRIX 0
+#endif
+
+#if defined unix \
+  || defined __unix \
+  || defined _XOPEN_SOURCE \
+  || defined _POSIX_SOURCE
+# define OS_UNIX 0
+#elif defined OS_AIX \
+ || defined OS_OSF \
+ || defined OS_NETBSD \
+ || defined OS_QNX \
+ || defined OS_CYGWIN \
+ || (defined OS_AMIGA && defined CC_GCC)
+# ifndef OS_UNIX
+#   define OS_UNIX 0
+# endif
+#endif
+
+#if defined __USLC__
+  || defined __UNIXWARE__
+  || (defined __svr4__ && defined i386)
+# define OS_UNIXWARE 0
+#endif
+
+#if defined VMS || defined __VMS
+# if defined __VMS_VER
+#   define OS_VMS VERNO_10_VVRR00PP00(__VMS_VER)
+# else
+#   define OS_VMS 0
+# endif
+#endif
+
+#if defined _WIN64 \
+  || defined _M_X64 \
+  || defined _M_AMD64 \
+  || defined __WIN32__ \
+  || defined _WIN32 \
+  || defined WIN32 \
+  || defined __TOS_WIN__ \
+  ||defined __WINDOWS__
+# define OS_WIN 0
 #endif
 
 #endif /* !__UCC_OS_H */
