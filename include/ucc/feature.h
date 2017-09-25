@@ -69,9 +69,6 @@
 # if VERNO_GT(CC_GCC, 2, 0)
 #   define ucc_has_builtin_expect 1
 # endif
-# if VERNO_GT(CC_GCC, 3, 0)
-#  define ucc_has_builtin___builtin_expect 1
-# endif
 # if VERNO_GE(CC_GCC, 4, 6)
 #  define ucc_has_attribute_externally_visible 1
 # endif
@@ -82,7 +79,7 @@
 # if VERNO_GE(CC_GCC, 4, 9)
 #   define ucc_has_feature_c_thread_local 1
 # endif
-# if defined __GNUC_GNU_INLINE__ || VERNO_Lt(CC_GCC, 4, 3)
+# if defined __GNUC_GNU_INLINE__ || VERNO_LT(CC_GCC, 4, 3)
 #  define ucc_has_attribute_gnu_inline 1
 # endif
 # if defined __GNUC_STDC_INLINE__ || VERNO_GE(CC_GCC, 4, 3)

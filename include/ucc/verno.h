@@ -32,7 +32,7 @@
 #define VERNO_GT(verno, major, minor) ((verno) > VERNO(major, minor, 0))
 #define VERNO_GE(verno, major, minor) ((verno) >= VERNO(major, minor, 0))
 #define VERNO_EQ(verno, major, minor) ((verno) == VERNO(major, minor, 0))
-#define VERNO_Lt(verno, major, minor) ((verno) < VERNO(major, minor, 0))
+#define VERNO_LT(verno, major, minor) ((verno) < VERNO(major, minor, 0))
 #define VERNO_LE(verno, major, minor) ((verno) <= VERNO(major, minor, 0))
 
 /*!@def VERNO(major, minor, patch)

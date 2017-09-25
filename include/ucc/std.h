@@ -31,6 +31,10 @@
 
 #include "plat.h"
 
+#ifdef OS_CYGWIN
+# include <sys/features.h>
+#endif
+
 #define VERSION_C89 198900L
 #define VERSION_C90 199000L
 #define VERSION_C94 199409L
@@ -38,19 +42,19 @@
 
 #if defined(__STDC_VERSION__)
 # if (__STDC_VERSION__ - 0 > 1)
-#  define STD_C __STDC_VERSION__
+#   define STD_C __STDC_VERSION__
 # else
-#  if (CC_SUNPRO - 0 >= 0x420)
-#   define STD_C VERSION_C94
-#  else
-#   define STD_C VERSION_C90
-#  endif
+#   if (CC_SUNPRO - 0 >= 0x420)
+#     define STD_C VERSION_C94
+#   else
+#     define STD_C VERSION_C90
+#   endif
 # endif
 #else
 # if defined(__STDC__) \
   || defined(_MSC_EXTENSIONS) \
   || defined(CC_BORLAND)
-#  define STD_C VERSION_C89
+#   define STD_C VERSION_C89
 # endif
 #endif
 
@@ -71,9 +75,9 @@
 
 #if defined(__cplusplus)
 # if __cplusplus - 0 == 1
-#  define STD_CXX VERSION_CXX98
+#   define STD_CXX VERSION_CXX98
 # else
-#  define STD_CXX __cplusplus
+#   define STD_CXX __cplusplus
 # endif
 #endif
 
@@ -122,8 +126,8 @@
 #if (_XOPEN_VERSION - 0 >= 4) || defined(_XOPEN_XPG4)
 # define STD_XOPEN_1992
 #endif
-#if (_XOPEN_VERSION - 0 > 4) \
- || (defined(_XOPEN_UNIX) && (_XOPEN_VERSION - 0 == 4))
+#if (_XOPEN_VERSION - 0 > 4) || \
+    (defined(_XOPEN_UNIX) && (_XOPEN_VERSION - 0 == 4))
 # define STD_XOPEN_1995
 #endif
 #if (_XOPEN_VERSION - 0 >= VERSION_XOPEN_1998)
@@ -137,15 +141,15 @@
 # define STD_XOPEN _XOPEN_VERSION
 #else
 # if defined(STD_XOPEN_1995)
-#  define STD_XOPEN VERSION_XOPEN_1995
+#   define STD_XOPEN VERSION_XOPEN_1995
 # else
-#  if defined(STD_XOPEN_1992)
-#   define STD_XOPEN VERSION_XOPEN_1992
-#  else
-#   if defined(STD_XOPEN_1989)
-#    define STD_XOPEN VERSION_XOPEN_1989
+#   if defined(STD_XOPEN_1992)
+#     define STD_XOPEN VERSION_XOPEN_1992
+#   else
+#     if defined(STD_XOPEN_1989)
+#       define STD_XOPEN VERSION_XOPEN_1989
+#     endif
 #   endif
-#  endif
 # endif
 #endif
 
