@@ -65,7 +65,7 @@
 #elif __has_attribute(always_inline)
 # define FORCEINLINE __attribute__((__always_inline__)) __inline__
 #elif defined CC_MSVC || defined CC_INTEL
-# define FORCEINLINE __forceinline __inline__
+# define FORCEINLINE __forceinline
 #else
 # define FORCEINLINE __inline__
 #endif

@@ -101,7 +101,9 @@
 # define __extern_c__
 #endif
 
-#if __has_attribute(visibility)
+#if defined CC_MSVC
+# define __export_link__ __declspec(dllexport)
+#elif __has_attribute(visibility)
 # define __export_link__ __attribute__((visibility("default")))
 #else
 # define __export_link__
