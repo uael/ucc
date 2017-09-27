@@ -1,4 +1,4 @@
-#include <ucc.h>
+#include "ucc.h"
 #include <assert.h>
 #include <stdlib.h>
 
@@ -13,7 +13,7 @@ die(int code) {
 }
 
 int main(void) {
-  assert(10203UL == VERNO(1, 2, 3));
+  assert(10200003UL == VERNO(1, 2, 3));
   assert(5 == foo(2, 3));
   die(0);
 }

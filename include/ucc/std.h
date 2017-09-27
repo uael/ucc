@@ -31,10 +31,6 @@
 
 #include "plat.h"
 
-#ifdef OS_CYGWIN
-# include <sys/features.h>
-#endif
-
 #define VERSION_C89 198900L
 #define VERSION_C90 199000L
 #define VERSION_C94 199409L

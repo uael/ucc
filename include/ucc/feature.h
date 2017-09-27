@@ -29,7 +29,7 @@
 #ifndef __UCC_FEATURE_H
 # define __UCC_FEATURE_H
 
-#include "std.h"
+#include "plat.h"
 
 #ifndef __has_feature
 # define __has_feature(x) ucc_has_feature_##x
