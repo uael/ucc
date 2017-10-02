@@ -456,7 +456,8 @@
 # endif
 # define CC_VISUALC_6_0 1200
 # define CC_VISUALC_7_0 1300
-# define _CRT_SECURE_NO_WARNINGS
+# define _CRT_SECURE_NO_WARNINGS 1
+# define _CRT_DECLARE_NONSTDC_NAMES 1
 # pragma warning(disable: 4081)
 # pragma warning(disable: 4141)
 #endif

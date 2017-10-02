@@ -36,6 +36,7 @@
 #include "ucc/cpu.h"
 #include "ucc/feature.h"
 #include "ucc/kw.h"
+#include "ucc/libc.h"
 #include "ucc/os.h"
 #include "ucc/plat.h"
 #include "ucc/pp.h"
