@@ -53,7 +53,9 @@
 # define NOSANITIZE
 #endif
 
-#if __has_feature(c_inline)
+#if defined U_DEBUG
+# define FORCEINLINE
+#elif __has_feature(c_inline)
 # define FORCEINLINE __attribute__((__always_inline__)) __inline__
 #elif defined CC_GCC
 # if __has_attribute(gnu_inline)

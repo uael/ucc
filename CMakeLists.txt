@@ -13,6 +13,23 @@ set(ucc_HDR ${ucc_INC_DIR}/ucc.h)
 add_library(ucc INTERFACE)
 target_include_directories(ucc INTERFACE ${ucc_INC_DIR})
 
+set(CMAKE_C_FLAGS "")
+set(CMAKE_C_FLAGS_DEBUG "")
+set(CMAKE_C_FLAGS_RELEASE "")
+
+target_compile_definitions(ucc
+  INTERFACE U_$<$<CONFIG:Debug>:DEBUG>$<$<CONFIG:Release>:RELEASE>)
+if (MSVC)
+  target_compile_options(ucc
+    INTERFACE /MT$<$<CONFIG:Debug>:d> /Oy /Za
+    INTERFACE /O$<$<CONFIG:Debug>:d>$<$<CONFIG:Release>:x>)
+else ()
+  target_compile_options(ucc
+    INTERFACE -Wall -Werror -Wextra -fomit-frame-pointer
+    INTERFACE -Wno-missing-field-initializers
+    INTERFACE -O$<$<CONFIG:Debug>:0 -g3>$<$<CONFIG:Release>:3>)
+endif ()
+
 get_directory_property(ucc_PARENT PARENT_DIRECTORY)
 if (NOT ${ucc_PARENT})
   set(ucc_DEVEL TRUE)

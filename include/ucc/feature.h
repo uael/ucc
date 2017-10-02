@@ -29,7 +29,7 @@
 #ifndef __UCC_FEATURE_H
 # define __UCC_FEATURE_H
 
-#include "plat.h"
+#include "libs.h"
 
 #ifndef __has_feature
 # define __has_feature(x) ucc_has_feature_##x
@@ -73,20 +73,37 @@
 #  define ucc_has_attribute_externally_visible 1
 # endif
 # if VERNO_GE(CC_GCC, 4, 7)
-#  define ucc_has_feature_stdnoreturn_h 1
-#  define ucc_has_feature_stdalign_h 1
+#   define ucc_has_feature_stdnoreturn_h 1
+#   define ucc_has_feature_stdalign_h 1
 # endif
 # if VERNO_GE(CC_GCC, 4, 9)
 #   define ucc_has_feature_c_thread_local 1
 # endif
 # if defined __GNUC_GNU_INLINE__ || VERNO_LT(CC_GCC, 4, 3)
-#  define ucc_has_attribute_gnu_inline 1
+#   define ucc_has_attribute_gnu_inline 1
 # endif
 # if defined __GNUC_STDC_INLINE__ || VERNO_GE(CC_GCC, 4, 3)
-#  define ucc_has_feature_c_inline 1
+#   define ucc_has_feature_c_inline 1
 # endif
 #elif defined CC_ICC
-#   define ucc_has_builtin_expect 1
+# define ucc_has_builtin_expect 1
+#elif defined CC_MSVC
+# include <corecrt.h>
+# if defined __STDC_SECURE_LIB__ && __STDC_SECURE_LIB__ >= 200411L
+#   define ucc_has_feature_complex_h 1
+#   define ucc_has_feature_fcntl_h 1
+#   define ucc_has_feature_fenv_h 1
+#   define ucc_has_feature_inttypes_h 1
+#   define ucc_has_feature_io_h 1
+#   define ucc_has_feature_stdint_h 1
+#   define ucc_has_feature_stdbool_h 1
+#   define ucc_has_feature_sys_stat_h 1
+#   define ucc_has_feature_sys_types_h 1
+#   define ucc_has_feature_wchar_h 1
+#   define ucc_has_feature_wctype_h 1
+# else
+#   error "Download and install the lastest ucrt from Microsoft."
+# endif
 #endif
 
 #endif /* !__UCC_FEATURE_H */

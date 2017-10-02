@@ -35,6 +35,7 @@
 #define VERSION_C90 199000L
 #define VERSION_C94 199409L
 #define VERSION_C99 199901L
+#define VERSION_C11 201112L
 
 #if defined(__STDC_VERSION__)
 # if (__STDC_VERSION__ - 0 > 1)
@@ -48,7 +49,7 @@
 # endif
 #else
 # if defined(__STDC__) \
-  || defined(_MSC_EXTENSIONS) \
+  || defined(CC_MSVC) \
   || defined(CC_BORLAND)
 #   define STD_C VERSION_C89
 # endif
@@ -65,6 +66,9 @@
 #endif
 #if (STD_C - 0 >= VERSION_C99)
 # define STD_C99
+#endif
+#if (STD_C - 0 >= VERSION_C11)
+# define STD_C11
 #endif
 
 #define VERSION_CXX98 199711L

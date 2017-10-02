@@ -23,25 +23,42 @@
  * SOFTWARE.
  */
 
-/*!@file ucc.h
+/*!@file ucc/libs.h
  * @author uael
  */
-#ifndef __UCC_H
-# define __UCC_H
+#ifndef __UCC_LIBS_H
+# define __UCC_LIBS_H
 
-#include "ucc/arch.h"
-#include "ucc/attr.h"
-#include "ucc/builtin.h"
-#include "ucc/cc.h"
-#include "ucc/cpu.h"
-#include "ucc/feature.h"
-#include "ucc/kw.h"
-#include "ucc/libc.h"
-#include "ucc/libs.h"
-#include "ucc/os.h"
-#include "ucc/plat.h"
-#include "ucc/pp.h"
-#include "ucc/std.h"
-#include "ucc/verno.h"
+#include "std.h"
 
-#endif /* !__UCC_H */
+#if defined(__ANDROID__)
+# include <sys/cdefs.h>
+#elif defined(__APPLE__)
+# include <TargetConditionals.h>
+#elif defined(__linux__)
+# include <features.h>
+#endif
+
+#if defined (_MSC_VER)
+# define LIBC_MSVCRT 1
+#elif defined(__BIONIC__)
+# define LIBC_BIONIC 1
+# define LIBC_BSD 1
+#elif defined(__UCLIBC__)
+# define LIBC_UCLIBC 1
+#elif defined(__KLIBC__)
+# define LIBC_KLIBC 1
+# define LIBC_BSD 1
+#elif defined(__CRTL_VER)
+# define LIBC_VMS 1
+# define LIBC_BSD 1
+#elif defined(__LIBREL__)
+# define LIBC_ZOS 1
+# define LIBC_BSD 1
+#elif defined(__GLIBC__) || defined(__GNU_LIBRARY__)
+# define LIBC_GLIBC 1
+#else
+# define LIBC_BSD 1
+#endif
+
+#endif /* !__UCC_LIBS_H */

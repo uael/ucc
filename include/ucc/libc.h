@@ -29,36 +29,128 @@
 #ifndef __UCC_LIBC_H
 # define __UCC_LIBC_H
 
-#include "std.h"
+#include "feature.h"
 
-#if defined(__ANDROID__)
-# include <sys/cdefs.h>
-#elif defined(__APPLE__)
-# include <TargetConditionals.h>
-#elif defined(__linux__)
-# include <features.h>
+#ifdef __cplusplus
+# include <cassert>
+# include <cctype>
+# include <cerrno>
+# include <cfloat>
+# include <climits>
+# include <clocale>
+# include <cmath>
+# include <csetjmp>
+# include <csignal>
+# include <cstdarg>
+# include <cstddef>
+# include <cstdint>
+# include <cstdio>
+# include <cstdlib>
+# include <cstring>
+# include <ctime>
+# include <ctime>
+#else
+# include <assert.h>
+# include <ctype.h>
+# include <errno.h>
+# include <float.h>
+# include <limits.h>
+# include <locale.h>
+# include <math.h>
+# include <setjmp.h>
+# include <signal.h>
+# include <stdarg.h>
+# include <stddef.h>
+# include <stdint.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <time.h>
+# include <time.h>
 #endif
 
-#if defined (_MSC_VER)
-# define LIBC_MSVCRT 1
-#elif defined(__BIONIC__)
-# define LIBC_BIONIC 1
-# define LIBC_BSD 1
-#elif defined(__UCLIBC__)
-# define LIBC_UCLIBC 1
-#elif defined(__KLIBC__)
-# define LIBC_KLIBC 1
-# define LIBC_BSD 1
-#elif defined(__CRTL_VER)
-# define LIBC_VMS 1
-# define LIBC_BSD 1
-#elif defined(__LIBREL__)
-# define LIBC_ZOS 1
-# define LIBC_BSD 1
-#elif defined(__GLIBC__) || defined(__GNU_LIBRARY__)
-# define LIBC_GLIBC 1
-#else
-# define LIBC_BSD 1
+#if defined STD_C99 || __has_feature(complex_h)
+# include <complex.h>
+#endif
+
+#if defined OS_WIN || __has_feature(direct_h)
+# include <direct.h>
+#endif
+
+#if defined STD_POSIX || __has_feature(dirent_h)
+# include <dirent.h>
+#endif
+
+#if defined STD_POSIX || __has_feature(fcntl_h)
+# include <fcntl.h>
+#endif
+
+#if defined STD_C99 || __has_feature(fenv_h)
+# include <fenv.h>
+#endif
+
+#if defined STD_C99 || __has_feature(inttypes_h)
+# include <inttypes.h>
+#endif
+
+#if defined OS_WIN || __has_feature(io_h)
+# include <io.h>
+#endif
+
+#if defined STD_POSIX || __has_feature(iso646_h)
+# include <iso646.h>
+#endif
+
+#if defined STD_C11 || __has_feature(stdalign_h)
+# include <stdalign.h>
+#endif
+
+#if defined STD_C11 || __has_feature(stdatomic_h)
+# include <stdatomic.h>
+#endif
+
+#if defined STD_C99 || __has_feature(stdbool_h)
+# include <stdbool.h>
+#endif
+
+#if defined STD_C99 || __has_feature(stdint_h)
+# include <stdint.h>
+#endif
+
+#if defined STD_C11 || __has_feature(stdnoreturn_h)
+# include <stdnoreturn.h>
+#endif
+
+#if defined STD_C11 || __has_feature(threads_h)
+# include <stdthreads.h>
+#endif
+
+#if defined STD_POSIX || __has_feature(sys_stat_h)
+# include <sys/stat.h>
+#endif
+
+#if defined STD_POSIX || __has_feature(sys_types_h)
+# include <sys/types.h>
+#endif
+
+#if defined STD_C99 || __has_feature(tgmath_h)
+# include <tgmath.h>
+#endif
+
+#if defined STD_C11 || __has_feature(uchar_h)
+# include <uchar.h>
+#endif
+
+#if defined STD_POSIX || __has_feature(unistd_h)
+# include <unistd.h>
+#endif
+
+#if defined STD_C90 || __has_feature(wchar_h)
+# include <wchar.h>
+#endif
+
+#if defined STD_C90 || __has_feature(wctype_h)
+# include <wctype.h>
 #endif
 
 #endif /* !__UCC_LIBC_H */
