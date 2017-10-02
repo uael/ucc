@@ -38,9 +38,24 @@
 #endif
 #define __restrict__ __restrict
 #define __volatile__ __volatile
-#define __func__ __FUNCTION__
-#define __file__ __FILE__
-#define __line__ __LINE__
+
+#ifdef __FUNCTION__
+# define __func__ __FUNCTION__
+#else
+# define __func__ nil
+#endif
+
+#ifdef __FILE__
+# define __file__ __FILE__
+#else
+# define __file__ ""
+#endif
+
+#ifdef __LINE__
+# define __line__ __LINE__
+#else
+# define __line__ ""
+#endif
 
 #if defined CC_MSVC || defined CC_ICC
 # define __asm__ __asm
