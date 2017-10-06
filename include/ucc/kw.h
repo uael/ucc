@@ -32,30 +32,59 @@
 #include "features.h"
 
 #if defined(__STDC__) || defined(__cplusplus)
-# define __const const
-# define __signed signed
+# if !defined __const
+#   define __const const
+# endif
+# if !defined __signed
+#   define __signed signed
+# endif
 # if !defined CC_MSVC
-#   define __volatile volatile
+#   if !defined __volatile
+#     define __volatile volatile
+#   endif
 #   if !defined CC_GCC
+#     if !defined __restrict
+#       define __restrict
+#     endif
 #     define __restrict
 #   else
-#      define __restrict __restrict__
+#     if !defined __restrict
+#       define __restrict __restrict__
+#     endif
 #   endif
 # endif
 # if defined(__cplusplus)
-#    define __inline inline
-#    define __register
+#   if !defined __inline
+#     define __inline inline
+#   endif
+#   if !defined __register
+#     define __register
+#   endif
 # else
-#    define __register register
+#   if !defined __register
+#     define __register register
+#   endif
 # endif
 #else
 # if !defined CC_GCC && !defined CC_MSVC
-#   define __const
-#   define __inline
-#   define __signed
-#   define __volatile
-#   define __register
-#   define __restrict
+#   if !defined __const
+#     define __const
+#   endif
+#   if !defined __inline
+#     define __inline
+#   endif
+#   if !defined __signed
+#     define __signed
+#   endif
+#   if !defined __volatile
+#     define __volatile
+#   endif
+#   if !defined __register
+#     define __register
+#   endif
+#   if !defined __restrict
+#     define __restrict
+#   endif
 # endif
 #endif
 
