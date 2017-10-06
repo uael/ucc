@@ -111,7 +111,7 @@
 #if defined(__ia64__) || defined(_IA64) || \
     defined(__IA64__) || defined(__ia64) || \
     defined(_M_IA64) || defined(__itanium__)
-# define BOOST_ARCH_IA64 0
+# define ARCH_IA64 0
 #endif
 
 #if defined(__m68k__) || defined(M68000)
@@ -216,7 +216,7 @@
 # elif defined(__sparcv8)
 #   define ARCH_SPARC VERNO(8,0,0)
 # else
-#   define BOOST_ARCH_SPARC 0
+#   define ARCH_SPARC 0
 # endif
 #endif
 
@@ -232,7 +232,7 @@
 # elif defined(__sh1__)
 #   define ARCH_SH VERNO(1,0,0)
 # else
-#   define BOOST_ARCH_SH 0
+#   define ARCH_SH 0
 # endif
 #endif
 

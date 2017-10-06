@@ -29,7 +29,7 @@
 #ifndef __UCC_LIBC_H
 # define __UCC_LIBC_H
 
-#include "feature.h"
+#include "features.h"
 
 #ifdef __cplusplus
 # include <cassert>
@@ -48,8 +48,7 @@
 # include <cstdlib>
 # include <cstring>
 # include <ctime>
-# include <ctime>
-#else
+#elif defined __STDC__
 # include <assert.h>
 # include <ctype.h>
 # include <errno.h>
@@ -66,91 +65,124 @@
 # include <stdlib.h>
 # include <string.h>
 # include <time.h>
-# include <time.h>
 #endif
 
-#if defined STD_C99 || __has_feature(complex_h)
-# include <complex.h>
+#if defined STD_C99 || __has_feature__(c_complex) || __has_feature__(complex_h)
+# if defined __cplusplus
+#   include <complex>
+# else
+#   include <complex.h>
+# endif
 #endif
 
-#if defined OS_WIN || __has_feature(direct_h)
+#if defined OS_WIN || __has_feature__(direct_h)
 # include <direct.h>
 #endif
 
-#if defined STD_POSIX || __has_feature(dirent_h)
+#if defined STD_POSIX || __has_feature__(dirent_h)
 # include <dirent.h>
 #endif
 
-#if defined STD_POSIX || __has_feature(fcntl_h)
+#if defined STD_POSIX || __has_feature__(fcntl_h)
 # include <fcntl.h>
 #endif
 
-#if defined STD_C99 || __has_feature(fenv_h)
-# include <fenv.h>
+#if defined STD_C99 || __has_feature__(fenv_h)
+# if defined __cplusplus
+#   include <cfenv>
+# else
+#   include <fenv.h>
+# endif
 #endif
 
-#if defined STD_C99 || __has_feature(inttypes_h)
-# include <inttypes.h>
+#if defined STD_C99 || __has_feature__(inttypes_h)
+# if defined __cplusplus
+#   include <cinttypes>
+# else
+#   include <inttypes.h>
+# endif
 #endif
 
-#if defined OS_WIN || __has_feature(io_h)
+#if defined OS_WIN || __has_feature__(io_h)
 # include <io.h>
 #endif
 
-#if defined STD_POSIX || __has_feature(iso646_h)
+#if defined STD_POSIX || __has_feature__(iso646_h)
 # include <iso646.h>
 #endif
 
-#if defined STD_C11 || __has_feature(stdalign_h)
+#if defined OS_WIN || __has_feature__(malloc_h)
+# include <malloc.h>
+#endif
+
+#if defined STD_C11 || __has_feature__(c_alignas) || \
+    __has_feature__(c_alignof) || __has_feature__(stdalign_h)
 # include <stdalign.h>
 #endif
 
-#if defined STD_C11 || __has_feature(stdatomic_h)
+#if defined STD_C11 || __has_feature__(c_atomic) || __has_feature__(stdatomic_h)
 # include <stdatomic.h>
 #endif
 
-#if defined STD_C99 || __has_feature(stdbool_h)
-# include <stdbool.h>
+#if defined STD_C99 || __has_feature__(c_bool) || __has_feature__(stdbool_h)
+# if defined __cplusplus
+#   include <cstdbool>
+# else
+#   include <stdbool.h>
+# endif
 #endif
 
-#if defined STD_C99 || __has_feature(stdint_h)
-# include <stdint.h>
+#if defined STD_C99 || __has_feature__(stdint_h)
+# if defined __cplusplus
+#   include <cstdint>
+# else
+#   include <stdint.h>
+# endif
 #endif
 
-#if defined STD_C11 || __has_feature(stdnoreturn_h)
+#if defined STD_C11 || __has_feature__(c_noreturn) || \
+    __has_feature__(stdnoreturn_h)
 # include <stdnoreturn.h>
 #endif
 
-#if defined STD_C11 || __has_feature(threads_h)
-# include <stdthreads.h>
-#endif
-
-#if defined STD_POSIX || __has_feature(sys_stat_h)
+#if defined STD_POSIX || __has_feature__(sys_stat_h)
 # include <sys/stat.h>
 #endif
 
-#if defined STD_POSIX || __has_feature(sys_types_h)
+#if defined STD_POSIX || __has_feature__(sys_types_h)
 # include <sys/types.h>
 #endif
 
-#if defined STD_C99 || __has_feature(tgmath_h)
+#if defined STD_C99 || __has_feature__(tgmath_h)
 # include <tgmath.h>
 #endif
 
-#if defined STD_C11 || __has_feature(uchar_h)
+#if defined STD_C11 || __has_feature__(threads_h)
+# include <threads.h>
+#endif
+
+#if defined STD_C11 || __has_feature__(uchar_h)
 # include <uchar.h>
 #endif
 
-#if defined STD_POSIX || __has_feature(unistd_h)
+#if defined STD_POSIX || __has_feature__(unistd_h)
 # include <unistd.h>
 #endif
 
-#if defined STD_C90 || __has_feature(wchar_h)
-# include <wchar.h>
+#if defined STD_C90 || __has_feature__(wchar_h)
+# if defined __cplusplus
+#   include <cwchar>
+# else
+#   include <stdbool.h>
+# endif
 #endif
 
-#if defined STD_C90 || __has_feature(wctype_h)
-# include <wctype.h>
+#if defined STD_C90 || __has_feature__(wctype_h)
+# if defined __cplusplus
+#   include <cwctype>
+# else
+#   include <wctype.h>
+# endif
 #endif
 
 #endif /* !__UCC_LIBC_H */

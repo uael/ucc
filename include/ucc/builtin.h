@@ -31,7 +31,7 @@
 
 #include "kw.h"
 
-#if __has_builtin(expect)
+#if __has_builtin__(expect)
 # define LIKELY(x) __builtin_expect(!!(x), 1)
 # define UNLIKELY(x) __builtin_expect(!!(x), 0)
 #else

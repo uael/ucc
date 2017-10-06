@@ -34,7 +34,7 @@
 #include "ucc/builtin.h"
 #include "ucc/cc.h"
 #include "ucc/cpu.h"
-#include "ucc/feature.h"
+#include "ucc/features.h"
 #include "ucc/kw.h"
 #include "ucc/libc.h"
 #include "ucc/libs.h"

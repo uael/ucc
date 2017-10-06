@@ -21,7 +21,8 @@ target_compile_definitions(ucc
   INTERFACE U_$<$<CONFIG:Debug>:DEBUG>$<$<CONFIG:Release>:RELEASE>)
 if (MSVC)
   target_compile_options(ucc
-    INTERFACE /MT$<$<CONFIG:Debug>:d> /Oy /Za
+    INTERFACE /MT$<$<CONFIG:Debug>:d> /Oy /Za /W3
+    INTERFACE /D_CRT_SECURE_NO_WARNINGS
     INTERFACE /O$<$<CONFIG:Debug>:d>$<$<CONFIG:Release>:x>)
 else ()
   target_compile_options(ucc
@@ -31,12 +32,12 @@ else ()
 endif ()
 
 get_directory_property(ucc_PARENT PARENT_DIRECTORY)
-if (NOT ${ucc_PARENT})
+if (NOT ucc_PARENT)
   set(ucc_DEVEL TRUE)
-elseif (NOT ${ucc_DEVEL})
+elseif (NOT ucc_DEVEL)
   set(ucc_DEVEL FALSE)
 endif ()
-if (${ucc_DEVEL} AND EXISTS ${ucc_TEST_DIR})
+if (ucc_DEVEL AND EXISTS ${ucc_TEST_DIR})
   if (NOT ucc_PARENT)
     enable_testing()
   endif ()
@@ -44,10 +45,10 @@ if (${ucc_DEVEL} AND EXISTS ${ucc_TEST_DIR})
   file(GLOB ucc_TEST_SRCS ${ucc_TEST_SRCS} ${ucc_TEST_DIR}/*.c)
   foreach (ucc_TEST_SRC ${ucc_TEST_SRCS})
     get_filename_component(ucc_TEST_NAME ${ucc_TEST_SRC} NAME_WE)
-    add_executable(test_${ucc_TEST_NAME} ${ucc_TEST_SRC})
-    add_dependencies(test_${ucc_TEST_NAME} ucc)
-    target_link_libraries(test_${ucc_TEST_NAME} ucc)
-    add_test(${ucc_TEST_NAME} test_${ucc_TEST_NAME})
+    add_executable(test_ucc_${ucc_TEST_NAME} ${ucc_TEST_SRC})
+    add_dependencies(test_ucc_${ucc_TEST_NAME} ucc)
+    target_link_libraries(test_ucc_${ucc_TEST_NAME} ucc)
+    add_test(${ucc_TEST_NAME} test_ucc_${ucc_TEST_NAME})
   endforeach ()
 endif ()
 

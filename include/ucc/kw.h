@@ -29,113 +29,174 @@
 #ifndef __UCC_KW_H
 # define __UCC_KW_H
 
-#include "feature.h"
+#include "features.h"
 
-#ifndef __cplusplus
-# define __register__ register
-#else
-# define __register__
-#endif
-#define __restrict__ __restrict
-#define __volatile__ __volatile
-
-#ifdef __FUNCTION__
-# define __func__ __FUNCTION__
-#else
-# define __func__ nil
-#endif
-
-#ifdef __FILE__
-# define __file__ __FILE__
-#else
-# define __file__ ""
-#endif
-
-#ifdef __LINE__
-# define __line__ __LINE__
-#else
-# define __line__ ""
-#endif
-
-#if defined CC_MSVC || defined CC_ICC
-# define __asm__ __asm
-# define __inline__ __inline
-# define __packed__(...) __pragma(pack(push, 1)) __VA_ARGS__ __pragma(pack(pop))
-# define __align__(a) __declspec(align(a))
-# define __alignof__(ty) __alignof(ty)
-# define __cdecl__ __cdecl
-# define __stdcall__ __stdcall
-# define __fastcall__ __fastcall
-# define __thiscall__ __thiscall
-#elif defined CC_GCC
-# define __asm__ __asm__
-# define __inline__ __inline__
-# define __packed__(...) __attribute__((packed, aligned(1))) __VA_ARGS__
-# define __align__(a) __attribute__((aligned(a)))
-# define __alignof__(ty) __alignof__(ty)
-# if defined __x86_64 || defined __amd64__ || defined __amd64 \
-  || defined _M_IA64 || defined _M_X64
-#   define __cdecl__
-#   define __stdcall__
-#   define __fastcall__
-#   define __thiscall__
+#if defined(__STDC__) || defined(__cplusplus)
+# define __const const
+# define __signed signed
+# if !defined CC_MSVC
+#   define __volatile volatile
+#   if !defined CC_GCC
+#     define __restrict
+#   else
+#      define __restrict __restrict__
+#   endif
+# endif
+# if defined(__cplusplus)
+#    define __inline inline
+#    define __register
 # else
-#   define __cdecl__ __attribute__((__cdecl__))
-#   define __stdcall__ __attribute__((__stdcall__))
-#   define __fastcall__ __attribute__((__fastcall__))
-#   define __thiscall__ __attribute__((__thiscall__))
+#    define __register register
 # endif
 #else
-# define __asm__
-# define __inline__ inline
-# define __packed__(...) __VA_ARGS__
-# define __align__(a)
-# define __alignof__(ty)
-# define __cdecl__
-# define __stdcall__
-# define __fastcall__
-# define __thiscall__
+# if !defined CC_GCC && !defined CC_MSVC
+#   define __const
+#   define __inline
+#   define __signed
+#   define __volatile
+#   define __register
+#   define __restrict
+# endif
 #endif
 
-/*!@def __cpu_aligned__
- * the cpu byte alignment.
- */
-#if (CPU_BYTE == 8)
-# define __cpu_aligned__ __align__(8)
-#elif (CPU_BYTE == 4)
-# define __cpu_aligned__ __align__(4)
-#elif (CPU_BYTE == 2)
-# define __cpu_aligned__ __align__(2)
-#else
-# error unknown cpu bytes
+#if !defined __extern_c__
+# ifdef __cplusplus
+#   define __extern_c__ extern "C"
+# else
+#   define __extern_c__
+# endif
 #endif
 
-#ifdef __cplusplus
-# define __extern_c__ extern "C"
-#else
-# define __extern_c__
+#if !defined __api__
+# if defined _MT && defined _DLL
+#   if __has_declspec_attribute__(dllexport)
+#     define __export_link__ __declspec(dllexport)
+#   elif defined __export
+#     define __export_link__ __export
+#   else
+#     define __export_link__
+#   endif
+#   if __has_declspec_attribute__(dllimport)
+#     define __import_link__ __declspec(dllimport)
+#   else
+#     define __import_link__
+#   endif
+# else
+#   if __has_attribute__(visibility)
+#     define __export_link__ __attribute__((visibility("default")))
+#   else
+#     define __export_link__
+#   endif
+#   define __import_link__
+# endif
+# if defined U_COMPILE
+#   ifdef __cplusplus
+#     define __ext__ extern "C" __import_link__
+#     define __api__ extern "C" __export_link__
+#   else
+#     define __ext__ extern __import_link__
+#     define __api__ extern __export_link__
+#   endif
+# else
+#   ifdef __cplusplus
+#     define __ext__ extern "C" __import_link__
+#     define __api__ extern "C" __import_link__
+#   else
+#     define __ext__ extern __import_link__
+#     define __api__ extern __import_link__
+#   endif
+# endif
 #endif
 
-#if defined CC_MSVC
-# define __export_link__ __declspec(dllexport)
-#elif __has_attribute(visibility)
-# define __export_link__ __attribute__((visibility("default")))
-#else
-# define __export_link__
+#if !defined __file__
+# if defined __FILE__
+#   define __file__ __FILE__
+# else
+#   define __file__ nil
+# endif
 #endif
 
-#ifdef __cplusplus
-# define __export__ extern "C" __export_link__
-#else
-# define __export__ extern __export_link__
+#if !defined __func__
+# if defined __FUNCTION__
+#   define __func__ __FUNCTION__
+# elif defined __FUNC__
+#   define __func__ __FUNC__
+# else
+#   define __func__ NULL
+# endif
 #endif
 
-#if __has_feature(c_thread_local)
-# define __thread_local__ _Thread_local
-#elif defined CC_GCC
-# define __thread_local__ __thread
-#elif defined CC_MSVC || defined CC_BORLAND
-# define __thread_local__ __declspec(thread)
+#if !defined __line__
+# if defined __LINE__
+#   define __line__ __LINE__
+# else
+#   define __line__ (-1)
+# endif
+#endif
+
+#if !defined __pretty_func__
+# if defined __PRETTY_FUNCTION__
+#   define __pretty_func__ __PRETTY_FUNCTION__
+# elif defined __PRETTY_FUNC__
+#   define __pretty_func__ __PRETTY_FUNC__
+# else
+#   define __pretty_func__ __func__
+# endif
+#endif
+
+#if !defined __aligned
+# if defined aligned
+#   define __aligned(x) aligned(x)
+# elif __has_declspec_attribute__(align)
+#   define __aligned(x) __declspec(align(x))
+# elif __has_attribute__(aligned)
+#   define __aligned(x) __attribute__((aligned(x)))
+# else
+#   define __aligned(x)
+# endif
+#endif
+
+#if !defined __always_inline
+# if defined __always_inline__
+#   define __always_inline __always_inline__
+# elif defined always_inline
+#   define __always_inline always_inline
+# elif defined __forceinline || CC_MSVC
+#   define __always_inline __forceinline
+# elif defined forceinline
+#   define __always_inline forceinline
+# elif __has_attribute__(always_inline)
+#   define __always_inline __attribute__((__always_inline__))
+# else
+#   define __always_inline
+# endif
+#endif
+
+#if !defined __noreturn
+# if defined __dead2
+#   define __noreturn __dead2
+# elif defined _Noreturn
+#   define __noreturn _Noreturn
+# elif __has_feature__(stdnoreturn_h) || __has_feature__(c_noreturn)
+#   include <stdnoreturn.h>
+#   define __noreturn noreturn
+# elif __has_attribute__(noreturn)
+#   define __noreturn __attribute__((__noreturn__))
+# elif __has_declspec_attribute__(noreturn)
+#   define __noreturn __declspec(noreturn)
+# else
+#   define __noreturn
+# endif
+#endif
+
+#if !defined __thread_local
+# if defined _Thread_local || __has_feature__(c_thread_local)
+#   define __thread_local _Thread_local
+# elif defined __thread || defined CC_GCC
+#   define __thread_local __thread
+# elif __has_declspec_attribute__(thread)
+#   define __thread_local __declspec(thread)
+# endif
 #endif
 
 #endif /* !__UCC_KW_H */

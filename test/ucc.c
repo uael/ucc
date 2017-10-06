@@ -1,8 +1,6 @@
-#include "ucc.h"
-#include <assert.h>
-#include <stdlib.h>
+#include <ucc.h>
 
-static PURE CONST __inline__ int
+static PURE CONST FORCEINLINE int
 foo(int a, int b) {
   return a + b;
 }
